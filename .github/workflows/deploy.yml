@@ -15,6 +15,32 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Docker와 Docker Compose 설치 (필요한 경우에만 설치)
+      - name: Set up Docker
+        run: |
+          # Docker 설치 (GitHub Actions의 ubuntu-latest 환경에는 기본적으로 Docker가 설치되어 있음)
+          if ! command -v docker &> /dev/null; then
+            echo "Docker가 설치되어 있지 않습니다. 설치 중..."
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+            sudo systemctl start docker
+            sudo systemctl enable docker
+          else
+            echo "Docker가 이미 설치되어 있습니다."
+          fi
+          
+          # Docker Compose 설치 (설치된 버전 확인 후 필요하면 설치)
+          if ! command -v docker-compose &> /dev/null; then
+            echo "Docker Compose가 설치되어 있지 않습니다. 설치 중..."
+            sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+          else
+            echo "Docker Compose가 이미 설치되어 있습니다."
+          fi
+          
+          # docker-compose 설치 확인
+          docker-compose --version
+
       # Docker Hub 로그인
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -25,10 +51,8 @@ jobs:
       # Docker 이미지를 빌드하고 푸시
       - name: Build and Push Docker Image
         run: |
-          # Docker Compose로 express 서비스만 빌드
-          docker-compose build express
-          # 빌드한 express 이미지를 Docker Hub에 푸시
-          docker-compose push express
+          docker-compose build express  # express 서비스만 빌드
+          docker-compose push express  # 빌드한 express 이미지를 Docker Hub에 푸시
 
       # 서버에 배포
       - name: Deploy to Server
