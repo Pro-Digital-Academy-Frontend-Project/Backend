@@ -57,7 +57,7 @@ jobs:
       # 서버에 docker-compose.yml 파일을 복사 (scp 명령어 사용)
       - name: Copy docker-compose.yml to Server using scp
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/docker-compose.yml
 
       # 서버에 배포 명령어 실행
       - name: Deploy to Server
