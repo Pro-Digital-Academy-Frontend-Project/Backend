@@ -62,13 +62,13 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # 서버에 'server' 디렉토리가 있는지 확인하고, 없으면 생성
-            mkdir -p /server  # 서버 루트 디렉토리에 'server' 디렉토리 생성
+            # 서버에 'server' 디렉토리가 있는지 확인하고, 없으면 생성 (sudo 사용)
+            sudo mkdir -p /server  # 서버 루트 디렉토리에 'server' 디렉토리 생성
             # 로컬에서 'docker-compose.yml' 파일을 서버의 'server' 디렉토리로 복사
-            cp ./docker-compose.yml /server/docker-compose.yml  # GitHub Actions에서 파일 경로에 맞게 복사
+            scp ./Backend/docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/server/docker-compose.yml  # 정확한 경로로 복사
             # 'server' 디렉토리로 이동
             cd /server
             # 최신 이미지를 가져오기 (express 서비스만)
-            docker-compose pull express
+            sudo docker-compose pull express
             # express 서비스 실행
-            docker-compose up -d express
+            sudo docker-compose up -d express
