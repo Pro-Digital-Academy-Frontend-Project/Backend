@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/stockey-backend:latest ./Backend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/stockey-backend:latest .
 
       - name: Push Docker Image
         run: |
@@ -34,6 +34,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /path/to/your/docker-compose-directory
+            cd docker
             docker-compose pull express
             docker-compose up -d express
