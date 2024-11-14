@@ -63,7 +63,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo mkdir -p /server
-            sudo chown ${{ secrets.SERVER_USER }}: ${{ secrets.SERVER_USER }} /server  # 권한 설정 (필요 시)
 
       # Docker Compose 파일을 서버로 전송
       - name: Copy docker-compose.yml to Server
@@ -72,7 +71,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "Backend/docker-compose.yml"  # 경로 확인 필요
+          source: "docker-compose.yml"  # 경로 확인 필요
           target: "/server/docker-compose.yml"
 
       # 서버에 배포 명령어 실행
