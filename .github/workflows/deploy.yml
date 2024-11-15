@@ -34,7 +34,7 @@ jobs:
             echo "Docker Compose가 설치되어 있지 않습니다. 설치 중..."
             sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
-          else
+          else:
             echo "Docker Compose가 이미 설치되어 있습니다."
           fi
           
@@ -53,11 +53,6 @@ jobs:
         run: |
           docker-compose build express  # express 서비스만 빌드
           docker-compose push express  # 빌드한 express 이미지를 Docker Hub에 푸시
-
-      # 서버에 docker-compose.yml 파일을 복사 (scp 명령어 사용)
-      - name: Copy docker-compose.yml to Server using scp
-        run: |
-          scp -o StrictHostKeyChecking=no -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/docker-compose.yml
 
       # 서버에 배포 명령어 실행
       - name: Deploy to Server
