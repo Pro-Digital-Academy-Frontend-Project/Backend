@@ -53,6 +53,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu
+            
+            # MySQL 연결을 위해 환경 변수 설정
+            export DB_HOST=${{ secrets.DB_HOST }}
+            export DB_USER=${{ secrets.DB_USER }}
+            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            export DB_DATABASE=${{ secrets.DB_DATABASE }}
+
             # 서버에서 Docker 이미지를 pull하고 실행
             docker pull ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
             
