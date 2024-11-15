@@ -28,18 +28,6 @@ jobs:
           else
             echo "Docker가 이미 설치되어 있습니다."
           fi
-          
-          # Docker Compose 설치 (설치된 버전 확인 후 필요하면 설치)
-          if ! command -v docker-compose &> /dev/null; then
-            echo "Docker Compose가 설치되어 있지 않습니다. 설치 중..."
-            sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            sudo chmod +x /usr/local/bin/docker-compose
-          else
-            echo "Docker Compose가 이미 설치되어 있습니다."
-          fi
-          
-          # docker-compose 설치 확인
-          docker-compose --version
 
       # Docker Hub 로그인
       - name: Log in to Docker Hub
@@ -51,8 +39,10 @@ jobs:
       # Docker 이미지를 빌드하고 푸시
       - name: Build and Push Docker Image
         run: |
-          docker-compose build express  # express 서비스만 빌드
-          docker-compose push express  # 빌드한 express 이미지를 Docker Hub에 푸시
+          # Docker 이미지를 빌드
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest .
+          # Docker 이미지를 Docker Hub에 푸시
+          docker push ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
 
       # 서버에 배포 명령어 실행
       - name: Deploy to Server
@@ -63,5 +53,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu
-            docker-compose pull
-            docker-compose up -d
+            # 서버에서 Docker 이미지를 pull하고 실행
+            docker pull ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
+            docker stop stockey-express || true
+            docker rm stockey-express || true
+            docker run -d --name stockey-express -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
