@@ -55,10 +55,10 @@ jobs:
             cd /home/ubuntu
             
             # MySQL 연결을 위해 환경 변수 설정
-            export DB_HOST=${{ secrets.DB_HOST }}
-            export DB_USER=${{ secrets.DB_USER }}
-            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            export DB_DATABASE=${{ secrets.DB_DATABASE }}
+            # export DB_HOST=${{ secrets.DB_HOST }}
+            # export DB_USER=${{ secrets.DB_USER }}
+            # export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            # export DB_DATABASE=${{ secrets.DB_DATABASE }}
 
             # 서버에서 Docker 이미지를 pull하고 실행
             docker pull ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
@@ -71,4 +71,4 @@ jobs:
             docker rm stockey-express || true
 
             # 새로운 컨테이너 실행 (app-network 네트워크와 연결)
-            docker run -d --name stockey-express --network app-network -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
+            docker run -d --name stockey-express --network app-network --env-file /home/ubuntu/.env -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
