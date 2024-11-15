@@ -3,6 +3,7 @@
 // const exampleController = require('../controllers/exampleController')
 
 // router.get('/', exampleController.getAllExamples)
+
 // router.get('/:id', exampleController.getExampleById)
 // router.post('/', exampleController.createExample)
 // router.put('/:id', exampleController.updateExample)
