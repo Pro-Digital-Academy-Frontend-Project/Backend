@@ -10,6 +10,7 @@ var usersRouter = require('./routes/userRoutes')
 
 var app = express()
 const db = require('./db')
+
 app.use(
   cors({
     origin: [process.env.CLIENT_URL, 'http://localhost:5173'], // 허용할 도메인

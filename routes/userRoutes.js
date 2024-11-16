@@ -6,7 +6,7 @@ const { authenticate } = require('../middleware/authMiddleware')
 router.post('/register', userController.registerUser)
 router.post('/login', userController.loginUser)
 router.post('/logout', (req, res) => {
-  res.clearCookie('auth-token')
+  res.clearCookie('authToken')
   res.json({ message: '로그아웃 성공' })
 })
 
