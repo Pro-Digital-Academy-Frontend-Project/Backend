@@ -7,7 +7,9 @@ const User = {
     try {
       // 회원가입 시 비밀번호 암호화
       const hashedPassword = await bcrypt.hash(userData.password, saltRounds)
-      const data = { ...userData, password: hashedPassword }
+      const slack_id = userData.slack_id ? userData.slack_id : null
+      const data = { ...userData, password: hashedPassword, slack_id: slack_id }
+      console.log(data)
       db.query('INSERT INTO user SET ?', data, callback)
     } catch (error) {
       callback(error, null)
