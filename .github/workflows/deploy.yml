@@ -53,6 +53,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu
+
             # 서버에서 Docker 이미지를 pull하고 실행
             docker pull ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
             
@@ -64,4 +65,4 @@ jobs:
             docker rm stockey-express || true
 
             # 새로운 컨테이너 실행 (app-network 네트워크와 연결)
-            docker run -d --name stockey-express --network app-network -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
+            docker run -d --name stockey-express --network app-network -e DB_HOST=${{ secrets.SERVER_HOST }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_DATABASE=${{ secrets.DB_DATABASE }} -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest

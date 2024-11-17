@@ -1,0 +1,38 @@
+# Node modules
+/node_modules/
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+
+# npm package-lock files
+package-lock.json
+
+# Optional npm cache directory
+.npm/
+
+# dotenv environment files
+.env.local
+.env.*.local
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# VS Code settings
+.vscode/
+
+# Build files (for production build)
+dist/
+build/
+
+# Test coverage output
+coverage/
+
+# Temporary files
+*.swp
