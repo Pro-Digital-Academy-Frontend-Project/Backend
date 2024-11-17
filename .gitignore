@@ -1,6 +1,9 @@
 # Node.js dependencies
 /node_modules/
 
+# package-lock.josn
+package-lock.josn
+
 # env file
 .env
 
