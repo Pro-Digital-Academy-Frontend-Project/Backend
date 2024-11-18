@@ -3,12 +3,20 @@ var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
+const cors = require('cors')
 
 var indexRouter = require('./routes/index')
-var usersRouter = require('./routes/users')
+var usersRouter = require('./routes/userRoutes')
 
 var app = express()
 const db = require('./db')
+
+app.use(
+  cors({
+    origin: [process.env.CLIENT_URL, 'http://localhost:5173'], // 허용할 도메인
+    credentials: true, // 쿠키를 사용할 수 있게 설정
+  })
+)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
