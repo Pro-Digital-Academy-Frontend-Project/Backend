@@ -1,6 +1,5 @@
 const User = require('../models/User') // 모델 경로 주의 (대소문자 확인)
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const { createToken } = require('../middleware/authMiddleware')
 
 exports.registerUser = async (req, res) => {
@@ -31,7 +30,9 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   const { account_id, password } = req.body
   if (!account_id || !password) {
-    return res.status(400).json({ message: '아이디와 비밀번호를 입력해주세요.' })
+    return res
+      .status(400)
+      .json({ message: '아이디와 비밀번호를 입력해주세요.' })
   }
 
   try {

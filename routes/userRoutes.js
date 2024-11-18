@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/userController')
 const userKeywordController = require('../controllers/userKeywordController')
+const userStockController = require('../controllers/userStockController')
 const { authenticate } = require('../middleware/authMiddleware')
 
 //로그인, 회원가입, 로그아웃
@@ -25,5 +26,10 @@ router.delete(
   authenticate,
   userKeywordController.deleteUserKeyword
 )
+
+//사용자 종목
+router.get('/stocks', authenticate, userStockController.getUserStock)
+router.post('/stocks', authenticate, userStockController.addUserStock)
+router.delete('/stocks', authenticate, userStockController.deleteUserStock)
 
 module.exports = router
