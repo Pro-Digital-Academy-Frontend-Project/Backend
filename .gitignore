@@ -37,3 +37,6 @@ node_modules/
 
 # Windows system files
 Thumbs.db
+
+# cpu 칩 호환성 문제
+package-lock.json
