@@ -61,3 +61,29 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ error: '로그인에 실패했습니다.' })
   }
 }
+
+exports.alarmUpdate = async (req, res) => {
+  const user_id = req.user.userId
+  const { slack_id } = req.body
+
+  try {
+    // slack_id 업데이트
+    const [updatedRows] = await User.update(
+      { slack_id }, // 업데이트할 필드
+      {
+        where: {
+          id: user_id, // 조건: user_id가 일치하는 경우
+        },
+      }
+    )
+
+    if (updatedRows === 0) {
+      return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' })
+    }
+
+    res.status(200).json({ message: 'Slack ID 업데이트 성공' })
+  } catch (error) {
+    console.error('Slack ID 업데이트 오류:', error)
+    res.status(500).json({ error: 'Slack ID 업데이트에 실패했습니다.' })
+  }
+}

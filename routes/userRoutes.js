@@ -12,6 +12,7 @@ router.post('/logout', (req, res) => {
   res.clearCookie('authToken')
   res.json({ message: '로그아웃 성공' })
 })
+router.put('/alarm', authenticate, userController.alarmUpdate)
 
 // 인증된 사용자 정보 가져오기
 router.get('/me', authenticate, (req, res) => {
