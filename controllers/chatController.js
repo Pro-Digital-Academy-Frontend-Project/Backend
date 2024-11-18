@@ -1,6 +1,6 @@
 const ChatModel = require('../models/chatModel');
 
-const { Chat_Room, Chat_Room_Message } = require('../models') // 모든 모델을 가져옴
+const { Chat_Room, Chat_Room_Message, Chat_Room_Message_Like } = require('../models') // 모든 모델을 가져옴
 
 // GET 채팅방 목록 조회
 exports.getChatRooms = async (req, res) => {
@@ -32,13 +32,13 @@ exports.getMessagesByRoom = async (req, res) => {
 exports.sendMessage = async (req, res) => {
   try {
     const { room_id } = req.params;
-    const { user_id, message } = req.body;
+    const { message } = req.body;
     const newMessage = await Chat_Room_Message.create({
-        id: 'Tech Talk',
-        created_at: new Date(),
+        user_id: req.user.userId, // authenticate 미들웨어를 거치면 이 값을 받을 수 있음
+        room_id: room_id,
+        message: message,
       });
-    await ChatModel.sendMessage(room_id, user_id, message);
-    res.status(201).json({ message: 'Message sent successfully' });
+    res.status(201).json({ message: 'Message sent successfully', message_id: newMessage.id });
   } catch (error) {
     console.error('Error sending message:', error);
     res.status(500).json({ error: 'Failed to send message' });
@@ -49,10 +49,30 @@ exports.sendMessage = async (req, res) => {
 exports.likeMessage = async (req, res) => {
   try {
     const { message_id } = req.params;
-    await ChatModel.likeMessage(message_id);
+    await Chat_Room_Message.create({
+        user_id: req.user.userId, // authenticate 미들웨어를 거치면 이 값을 받을 수 있음
+        message_id: message_id,
+    });
     res.status(200).json({ message: 'Message liked successfully' });
   } catch (error) {
     console.error('Error liking message:', error);
     res.status(500).json({ error: 'Failed to like message' });
   }
 };
+
+// DELETE 메시지 좋아요 취소
+exports.unlikeMessage = async (req, res) => {
+    try {
+      const { message_id } = req.params;
+      await Chat_Room_Message_Like.destroy({
+        where: {
+          user_id: req.user.userId, // authenticate 미들웨어를 거치면 이 값을 받을 수 있음
+          message_id: message_id,
+        }
+      });
+      res.status(200).json({ message: 'Message unliked successfully' });
+    } catch (error) {
+      console.error('Error liking message:', error);
+      res.status(500).json({ error: 'Failed to unlike message' });
+    }
+  };
