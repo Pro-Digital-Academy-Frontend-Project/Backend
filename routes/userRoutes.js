@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/userController')
+const userKeywordController = require('../controllers/userKeywordController')
 const { authenticate } = require('../middleware/authMiddleware')
 
+//로그인, 회원가입, 로그아웃
 router.post('/register', userController.registerUser)
 router.post('/login', userController.loginUser)
 router.post('/logout', (req, res) => {
@@ -14,5 +16,8 @@ router.post('/logout', (req, res) => {
 router.get('/me', authenticate, (req, res) => {
   res.json({ userId: req.user.userId })
 })
+
+//사용자 키워드
+router.post('/keywords', authenticate, userKeywordController.addUserKeyword)
 
 module.exports = router
