@@ -54,4 +54,5 @@ module.exports = {
   User_Keyword,
   User_Stock,
   Keyword,
+  sequelize
 }
