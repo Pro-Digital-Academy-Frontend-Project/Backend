@@ -1,11 +1,16 @@
 const db = require('../db');
 
 // 채팅방 목록 조회
+// exports.getChatRooms = async () => {
+//   const query = 'SELECT * FROM stockey.chat_rooms';
+//   const [rows] = await db.promise().query(query);
+//   return rows;
+// };
 exports.getChatRooms = async () => {
-  const query = 'SELECT * FROM chat_rooms';
-  const [rows] = await db.promise().query(query);
-  return rows;
-};
+    const query = 'SELECT * FROM chat_room';
+    const [rows] = await db.query(query, { type: db.QueryTypes.SELECT });
+    return rows;
+  };
 
 // 특정 채팅방 메시지 조회
 exports.getMessagesByRoom = async (room_id) => {

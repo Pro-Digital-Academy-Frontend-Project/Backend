@@ -1,10 +1,12 @@
 const ChatModel = require('../models/chatModel');
 
+const { Chat_Room, Chat_Room_Message } = require('../models') // 모든 모델을 가져옴
+
 // GET 채팅방 목록 조회
 exports.getChatRooms = async (req, res) => {
   try {
-    const chatRooms = await ChatModel.getChatRooms();
-    res.json(chatRooms);
+    const rows = await Chat_Room.findByPk(1); //  키 기준 단일 레코드 찾기
+    res.json(rows);
   } catch (error) {
     console.error('Error fetching chat rooms:', error);
     res.status(500).json({ error: 'Failed to fetch chat rooms' });
@@ -15,7 +17,10 @@ exports.getChatRooms = async (req, res) => {
 exports.getMessagesByRoom = async (req, res) => {
   try {
     const { room_id } = req.params;
-    const messages = await ChatModel.getMessagesByRoom(room_id);
+    const messages = await Chat_Room_Message.findAll({
+        where: { room_id: room_id },
+        attributes: { exclude: ['room_id'] } // Sequelize에서 특정 컬럼 제외
+    });
     res.json(messages);
   } catch (error) {
     console.error('Error fetching messages:', error);
@@ -28,6 +33,10 @@ exports.sendMessage = async (req, res) => {
   try {
     const { room_id } = req.params;
     const { user_id, message } = req.body;
+    const newMessage = await Chat_Room_Message.create({
+        id: 'Tech Talk',
+        created_at: new Date(),
+      });
     await ChatModel.sendMessage(room_id, user_id, message);
     res.status(201).json({ message: 'Message sent successfully' });
   } catch (error) {
