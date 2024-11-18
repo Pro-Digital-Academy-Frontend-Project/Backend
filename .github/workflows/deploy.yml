@@ -3,7 +3,7 @@ name: CI/CD Pipeline for Backend
 on:
   push:
     branches:
-      - main  # 배포할 브랜치
+      - main # 배포할 브랜치
 
 jobs:
   build-and-deploy:
@@ -55,7 +55,7 @@ jobs:
 
             # 서버에서 Docker 이미지를 pull하고 실행
             docker pull ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
-            
+
             # app-network 네트워크가 없으면 생성
             docker network inspect app-network || docker network create app-network
 
