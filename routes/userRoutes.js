@@ -18,6 +18,12 @@ router.get('/me', authenticate, (req, res) => {
 })
 
 //사용자 키워드
+router.get('/keywords', authenticate, userKeywordController.getUserKeyword)
 router.post('/keywords', authenticate, userKeywordController.addUserKeyword)
+router.delete(
+  '/keywords',
+  authenticate,
+  userKeywordController.deleteUserKeyword
+)
 
 module.exports = router
