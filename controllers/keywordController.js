@@ -1,10 +1,30 @@
 const keywordService = require('../services/keywordService');
 
 exports.keywordRankingByStock = async (req, res) => {
-    const {stockId} = req.param;
+    const { stock_id } = req.params;
 
     try {
-        const result = keywordService.getKeywordRankingByStock(stockId)
+        const result = await keywordService.getKeywordRankingByStock(stock_id)
+        res.json(result)
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+}
+
+exports.stocksRankingByKeyword = async (req, res) => {
+    const { keyword_id } = req.params;
+
+    try {
+        const result = await keywordService.getStocksRankingByKeyword(keyword_id);
+        res.json(result)
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+}
+
+exports.totalRanking = async (req, res) => {
+    try {
+        const result = await keywordService.getTotalRanking();
         res.json(result)
     } catch (err) {
         res.status(500).json({message: err.message})
