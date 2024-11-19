@@ -11,7 +11,7 @@ const Stock = sequelize.define(
       allowNull: false,
     },
     code: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     stock_name: {
