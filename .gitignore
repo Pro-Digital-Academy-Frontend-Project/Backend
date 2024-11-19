@@ -40,3 +40,6 @@ node_modules/
 
 # Windows system files
 Thumbs.db
+
+# cpu 차이 해결
+package-lock.json
