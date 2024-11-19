@@ -17,7 +17,7 @@ router.post('/chat-rooms/:room_id/messages', authenticate, chatController.sendMe
 router.post('/messages/:message_id/like', authenticate, chatController.likeMessage);
 // router.post('/messages/:message_id/like', chatController.likeMessage);
 
-/* POST 메시지 좋아요 취소 */
+/* DELETE 메시지 좋아요 취소 */
 router.delete('/messages/:message_id/unlike', authenticate, chatController.unlikeMessage);
 // router.delete('/messages/:message_id/unlike', chatController.unlikeMessage);
 
