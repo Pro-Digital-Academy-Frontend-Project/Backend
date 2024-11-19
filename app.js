@@ -18,6 +18,7 @@ const {
 } = require('./models') // 모든 모델을 가져옴
 
 var indexRouter = require('./routes/index')
+var chatRouter = require('./routes/chat')
 var usersRouter = require('./routes/userRoutes')
 const keywordRouter = require('./routes/keywordRoutes')
 
@@ -55,6 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
+app.use('/api/chat', chatRouter)
 app.use('/keyword', keywordRouter)
 
 // catch 404 and forward to error handler
