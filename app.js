@@ -4,6 +4,9 @@ var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 const cors = require('cors')
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json'); // 자동으로 생성된 Swagger JSON 문서
+
 
 // 모델들을 가져옵니다.
 const {
@@ -54,10 +57,11 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/api/chat', chatRouter)
-app.use('/keyword', keywordRouter)
+app.use('/keywords', keywordRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
