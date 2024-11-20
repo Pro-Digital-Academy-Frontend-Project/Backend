@@ -18,10 +18,6 @@ User_Keyword.belongsTo(User, { foreignKey: 'user_id' })
 User.hasMany(User_Stock, { foreignKey: 'user_id' })
 User_Stock.belongsTo(User, { foreignKey: 'user_id' })
 
-// 3. User_Keyword와 Keyword: N:1 관계 (User_Keyword는 하나의 Keyword에 속함)
-User_Keyword.belongsTo(Keyword, { foreignKey: 'keyword_id' })
-Keyword.hasMany(User_Keyword, { foreignKey: 'keyword_id' })
-
 // 4. User_Stock과 Stock: N:1 관계 (User_Stock은 하나의 Stock에 속함)
 User_Stock.belongsTo(Stock, { foreignKey: 'stock_id' })
 Stock.hasMany(User_Stock, { foreignKey: 'stock_id' })
