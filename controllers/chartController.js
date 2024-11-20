@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 function getDateRange() {
     const today = new Date();
@@ -19,7 +19,7 @@ function getDateRange() {
 
 // 차트 데이터 조회
 exports.getChart = async (req, res) => {
-    const {stock_code, stock_name} = req.params;
+    const {stock_code, stock_name} = req.body;
 
     try {
         const { start, end } = getDateRange();
@@ -31,6 +31,8 @@ exports.getChart = async (req, res) => {
                 'Referer': 'https://finance.naver.com/'
             }
         });
+
+        console.log(resp.data);
     
         const data = resp.data;
         if (!data) {

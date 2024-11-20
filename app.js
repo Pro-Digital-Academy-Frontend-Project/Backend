@@ -24,6 +24,7 @@ var indexRouter = require('./routes/index')
 var chatRouter = require('./routes/chat')
 var usersRouter = require('./routes/userRoutes')
 const keywordRouter = require('./routes/keywordRoutes')
+const chartRouter = require('./routes/chartRoutes')
 
 var app = express()
 
@@ -62,6 +63,7 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/api/chat', chatRouter)
 app.use('/keywords', keywordRouter)
+app.use('/stocks', chartRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
