@@ -61,7 +61,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/api/chat', chatRouter)
-app.use('/keyword', keywordRouter)
+app.use('/keywords', keywordRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

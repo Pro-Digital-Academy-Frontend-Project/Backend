@@ -497,7 +497,7 @@
         }
       }
     },
-    "/keyword/stocks/{stock_id}": {
+    "/keywords/stocks/{stock_id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -520,7 +520,7 @@
         }
       }
     },
-    "/keyword/{keyword_id}/stock-rankings": {
+    "/keywords/{keyword_id}/stock-rankings": {
       "get": {
         "description": "",
         "parameters": [
@@ -543,9 +543,32 @@
         }
       }
     },
-    "/keyword/total-rankings": {
+    "/keywords/total-rankings": {
       "get": {
         "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/keywords/{keyword}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
