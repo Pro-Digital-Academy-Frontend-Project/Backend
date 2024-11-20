@@ -20,12 +20,8 @@ const User_Keyword = sequelize.define(
       },
       allowNull: false,
     },
-    keyword_id: {
-      type: DataTypes.BIGINT,
-      references: {
-        model: Keyword,
-        key: 'id',
-      },
+    keyword: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     alarm_status: {
