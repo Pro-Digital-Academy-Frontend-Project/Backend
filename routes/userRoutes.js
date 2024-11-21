@@ -27,10 +27,12 @@ router.delete(
   authenticate,
   userKeywordController.deleteUserKeyword
 )
+router.put('/keywords', authenticate, userKeywordController.updateUserKeyword)
 
 //사용자 종목
 router.get('/stocks', authenticate, userStockController.getUserStock)
 router.post('/stocks', authenticate, userStockController.addUserStock)
 router.delete('/stocks', authenticate, userStockController.deleteUserStock)
+router.put('/stocks', authenticate, userStockController.updateUserStock)
 
 module.exports = router
