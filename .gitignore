@@ -4,9 +4,6 @@
 # env file
 .env
 
-# package-lock.json
-package-lock.json
-
 # Logs
 logs
 *.log
@@ -40,6 +37,3 @@ node_modules/
 
 # Windows system files
 Thumbs.db
-
-# cpu 차이 해결
-package-lock.json

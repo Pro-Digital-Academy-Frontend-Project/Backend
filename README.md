@@ -8,7 +8,7 @@ ex) feat/#12-login
 
 **브랜치 새로 만들 때 'dev' 브랜치에 만들기**
 
-### 2. Commit Message
+### 2. Commit Message 
 
 Feat(#이슈번호): 작업내용
 
