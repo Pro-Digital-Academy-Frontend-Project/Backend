@@ -23,14 +23,14 @@ exports.addUserStock = async (req, res) => {
 
 // User_Stock 삭제
 exports.deleteUserStock = async (req, res) => {
-  const { stock_id } = req.body
+  const { stock_id } = req.query
   const user_id = req.user.userId
 
   try {
     // user_id와 stock_id가 일치하는 레코드 삭제
     const result = await User_Stock.destroy({
       where: {
-        id: stock_id,
+        stock_id: stock_id,
         user_id: user_id,
       },
     })
