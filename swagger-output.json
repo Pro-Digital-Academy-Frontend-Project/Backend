@@ -579,9 +579,19 @@
         }
       }
     },
-    "/stocks/chart": {
+    "/stocks/chart/{stock_code}": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "stock_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
