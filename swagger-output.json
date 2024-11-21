@@ -330,6 +330,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "stock_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -341,20 +348,6 @@
           },
           "500": {
             "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "stock_id": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
           }
         }
       }
