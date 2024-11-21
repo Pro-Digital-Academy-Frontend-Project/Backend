@@ -5,8 +5,8 @@ const { Chat_Room, Chat_Room_Message, Chat_Room_Message_Like } = require('../mod
 // GET 채팅방 목록 조회
 exports.getChatRooms = async (req, res) => {
   try {
-    const rows = await Chat_Room.findByPk(1); //  키 기준 단일 레코드 찾기
-    res.json(rows);
+    const chatRooms = await Chat_Room.findAll(); // 모든 레코드 조회
+    res.json(chatRooms);
   } catch (error) {
     console.error('Error fetching chat rooms:', error);
     res.status(500).json({ error: 'Failed to fetch chat rooms' });
