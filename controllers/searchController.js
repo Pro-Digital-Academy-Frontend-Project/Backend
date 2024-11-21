@@ -6,6 +6,7 @@ exports.searchStockByName = async (req, res) => {
 
     try {
         const stocks = await Stock.findAll({
+            attributes: ['id', 'code', 'stock_name', 'market'],
             where: {
                 stock_name: {
                     [require('sequelize').Op.like]: `%${stock_name}%`
