@@ -140,3 +140,30 @@ exports.unlikeMessage = async (req, res) => {
       res.status(500).json({ error: 'Failed to unlike message' });
     }
   };
+
+// ------필요할 줄 알고 만들긴 했는데 안 씀--------
+// GET 로그인된 유저의 특정 메시지의 좋아요 여부 조회
+exports.getLikeStatus = async (req, res) => {
+  try {
+    const { message_id } = req.params; // URL에서 message_id를 가져옴
+    const user_id = req.user.userId; // authenticate 미들웨어를 통해 user_id를 가져옴
+
+    // 테이블에서 특정 message_id와 user_id를 가진 row 검색
+    const like = await Chat_Room_Message_Like.findOne({
+      where: {
+        message_id: message_id,
+        user_id: user_id,
+      },
+    });
+
+    // 검색 결과가 존재하면 true, 없으면 false 반환
+    if (like) {
+      res.json({ likeStatus: true });
+    } else {
+      res.json({ likeStatus: false });
+    }
+  } catch (error) {
+    console.error('Error checking like status:', error);
+    res.status(500).json({ error: 'Failed to check like status' });
+  }
+};

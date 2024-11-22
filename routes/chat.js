@@ -22,4 +22,8 @@ router.post('/messages/:message_id/like', authenticate, chatController.likeMessa
 router.delete('/messages/:message_id/unlike', authenticate, chatController.unlikeMessage);
 // router.delete('/messages/:message_id/unlike', chatController.unlikeMessage);
 
+// ------필요할 줄 알고 만들긴 했는데 안 씀--------
+/* GET 로그인된 유저의 특정 메시지의 좋아요 여부 조회 */
+router.get('/messages/:message_id/like-status', authenticate, chatController.getLikeStatus);
+
 module.exports = router;

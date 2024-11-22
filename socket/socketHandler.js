@@ -36,12 +36,12 @@ const socketHandler = (io) => {
   
       // 전체 메시지 전송 처리
       socket.on("sendTotalMessage", (data) => {
-        const { username, roomId, message, created_at } = data;
+        const { message_id, roomId, message, created_at } = data;
         console.log("sendTotalMessage");
         console.log(`[${roomId}] 메시지:`, data);
         io.to(roomId).emit("receiveTotalMessage", {
-        //   username: `${username}`,
           roomId: `${roomId}`,
+          message_id: `${message_id}`,
           message: `${message}`,
           created_at: `${created_at}`,
         });
@@ -61,7 +61,6 @@ const socketHandler = (io) => {
           io.to(roomId).emit('updateMessageLike', {
             messageId,
             totalLikes,
-            likedByUser: true,
           });
         } catch (error) {
           console.error('좋아요 처리 중 오류:', error);
@@ -82,7 +81,6 @@ const socketHandler = (io) => {
           io.to(roomId).emit('updateMessageLike', {
             messageId,
             totalLikes,
-            likedByUser: false,
           });
         } catch (error) {
           console.error('좋아요 취소 처리 중 오류:', error);
