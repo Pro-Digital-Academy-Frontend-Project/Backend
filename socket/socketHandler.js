@@ -1,5 +1,7 @@
 const socketHandler = (io) => {
-    // 활성화된 룸을 추적하기 위한 Set 생성
+  const { Chat_Room_Message_Like } = require('../models') // 모든 모델을 가져옴
+
+  // 활성화된 룸을 추적하기 위한 Set 생성
     const activeRooms = new Set();
   
     io.on("connection", (socket) => {
@@ -43,6 +45,48 @@ const socketHandler = (io) => {
           message: `${message}`,
           created_at: `${created_at}`,
         });
+      });
+
+      // 좋아요 처리
+      socket.on('likeMessage', async (data) => {
+        const { messageId, roomId } = data;
+      
+        try {
+          // 좋아요 수 계산
+          const totalLikes = await Chat_Room_Message_Like.count({
+            where: { message_id: messageId },
+          });
+      
+          // 좋아요 이벤트를 방의 모든 클라이언트에게 전송
+          io.to(roomId).emit('updateMessageLike', {
+            messageId,
+            totalLikes,
+            likedByUser: true,
+          });
+        } catch (error) {
+          console.error('좋아요 처리 중 오류:', error);
+        }
+      });
+      
+      // 좋아요 취소 처리
+      socket.on('unlikeMessage', async (data) => {
+        const { messageId, roomId } = data;
+      
+        try {
+          // 좋아요 수 계산
+          const totalLikes = await Chat_Room_Message_Like.count({
+            where: { message_id: messageId },
+          });
+      
+          // 좋아요 취소 이벤트를 방의 모든 클라이언트에게 전송
+          io.to(roomId).emit('updateMessageLike', {
+            messageId,
+            totalLikes,
+            likedByUser: false,
+          });
+        } catch (error) {
+          console.error('좋아요 취소 처리 중 오류:', error);
+        }
       });
   
       // Timeline메시지 전송 처리

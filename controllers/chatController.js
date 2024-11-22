@@ -1,4 +1,5 @@
 // const ChatModel = require('../models/chatModel');
+const {verifyToken} = require("../middleware/authMiddleware")
 
 const { Chat_Room, Chat_Room_Message, Chat_Room_Message_Like } = require('../models') // 모든 모델을 가져옴
 
@@ -46,19 +47,43 @@ exports.getMessagesByRoom = async (req, res) => {
       ],
     });
 
-    const formattedMessages = messages.map((msg) => {
-      const totalLikes = msg.Chat_Room_Message_Likes.length; // 좋아요 총 개수
-      // const likedByUser = msg.Chat_Room_Message_Likes.some((like) => like.user_id === userId); // 현재 유저가 좋아요 했는지
-      return {
-        id: msg.id,
-        message: msg.message,
-        created_at: msg.created_at,
-        totalLikes: totalLikes,
-        // likedByUser: likedByUser,
-      };
-    });
+    // 로그인 여부 확인
+    let token = req.cookies['authToken']
+    let headerToken = req.headers.authorization
+    if (!token && headerToken) {
+      token = headerToken.split(' ')[1]
+    }
 
-    res.json(formattedMessages);
+    // 로그인이 되어있지 않은 경우는 likedByUser가 항상 false
+    if (!token) {
+      const formattedMessages = messages.map((msg) => {
+        const totalLikes = msg.Chat_Room_Message_Likes.length; // 좋아요 총 개수
+        return {
+          id: msg.id,
+          message: msg.message,
+          created_at: msg.created_at,
+          totalLikes: totalLikes,
+          likedByUser: false,
+        };
+      });
+      res.json(formattedMessages);
+    } else { // 로그인된 경우 해당 userId값으로 좋아요를 누른 댓글 표시
+      const user = verifyToken(token);
+      const userId = user.userId;
+      const formattedMessages = messages.map((msg) => {
+        const totalLikes = msg.Chat_Room_Message_Likes.length; // 좋아요 총 개수
+        const likedByUser = msg.Chat_Room_Message_Likes.some((like) => like.user_id === userId); // 현재 유저가 좋아요 했는지
+        return {
+          id: msg.id,
+          message: msg.message,
+          created_at: msg.created_at,
+          totalLikes: totalLikes,
+          likedByUser: likedByUser,
+        };
+      });
+      res.json(formattedMessages);
+    }
+
   } catch (error) {
     console.error('Error fetching messages with likes:', error);
     res.status(500).json({ error: 'Failed to fetch messages with likes' });
