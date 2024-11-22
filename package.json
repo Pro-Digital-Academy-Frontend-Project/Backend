@@ -25,13 +25,10 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "sequelize": "^6.37.5",
-<<<<<<< HEAD
-    "socket.io": "^4.8.1"
-=======
+    "socket.io": "^4.8.1",
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
->>>>>>> 650f64a2e674a27c2b53af4abbdb51c6cc2f6920
   },
   "devDependencies": {
     "eslint": "^9.15.0"
