@@ -23,13 +23,13 @@ exports.addUserKeyword = async (req, res) => {
 
 // user_keyword 삭제
 exports.deleteUserKeyword = async (req, res) => {
-  const { user_keyword_id } = req.body
+  const { keyword } = req.query
   const user_id = req.user.userId
   try {
     // 해당 user_keyword_id에 해당하는 레코드 삭제
     const result = await User_Keyword.destroy({
       where: {
-        id: user_keyword_id,
+        keyword: keyword,
         user_id: user_id,
       },
     })

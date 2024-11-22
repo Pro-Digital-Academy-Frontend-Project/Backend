@@ -43,7 +43,7 @@ exports.getStocksRankingByKeyword = async (keyword_id) => {
             include: [
                 {
                     model: Stock,  
-                    attributes: ['stock_name', 'code'], 
+                    attributes: ['id', 'stock_name', 'code'], 
                 }
             ],
             order: [['weight', 'DESC']], 
@@ -51,6 +51,7 @@ exports.getStocksRankingByKeyword = async (keyword_id) => {
         })
 
         const stockRankings = stocks.map(stock => ({
+            id: stock.Stock?.id,
             code: stock.Stock?.code,
             stock_name: stock.Stock?.stock_name,
         }));
