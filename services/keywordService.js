@@ -10,7 +10,7 @@ exports.getKeywordRankingByStock = async (stockId) => {
             order: [
                 ['weight', 'DESC'],
             ],
-            limit: 5,
+            limit: 20,
             include: [
                 {
                   model: Stock,  // Stock 모델을 포함시켜서 가져오기
@@ -47,7 +47,7 @@ exports.getStocksRankingByKeyword = async (keyword_id) => {
                 }
             ],
             order: [['weight', 'DESC']], 
-            limit: 5,
+            limit: 20,
         })
 
         const stockRankings = stocks.map(stock => ({
