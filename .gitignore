@@ -7,6 +7,9 @@
 # package-lock.json
 package-lock.json
 
+# Swagger Setting file
+swagger-output.json
+
 # Logs
 logs
 *.log
