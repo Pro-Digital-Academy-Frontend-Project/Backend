@@ -400,13 +400,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "stock_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -426,7 +419,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "stock_id": {
+                  "id": {
+                    "example": "any"
+                  },
+                  "alarm_status": {
                     "example": "any"
                   }
                 }
