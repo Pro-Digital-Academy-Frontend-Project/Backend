@@ -25,11 +25,7 @@ exports.postToken = async (req, res) => {
       return res.status(500).json({ error: '토큰 조회에 실패했습니다.' });
     }
 
-    const token = {
-      token: data.access_token,
-      expires_in: data.expires_in,
-      expired_at: data.access_token_token_expired,
-    };
+    const token = data.access_token;
 
     res.json(token);
   } catch (error) {

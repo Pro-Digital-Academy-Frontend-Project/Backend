@@ -46,12 +46,13 @@ exports.getChart = async (req, res) => {
 
     const stockData = data.output2.map(item => ({
       date: `${item.stck_bsop_date.slice(0, 4)}-${item.stck_bsop_date.slice(4, 6)}-${item.stck_bsop_date.slice(6, 8)}`,
-      open: item.stck_oprc,
-      high: item.stck_hgpr,
-      low: item.stck_lwpr,
-      close: item.clpr,
-      volume: item.acml_vol,
+      open: parseFloat(item.stck_oprc),
+      high: parseFloat(item.stck_hgpr),
+      low: parseFloat(item.stck_lwpr),
+      close: parseFloat(item.stck_clpr),
+      volume: parseInt(item.acml_vol),
     }))
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
 
     res.json(stockData)
   } catch (error) {
