@@ -8,5 +8,6 @@ const searchController = require('../controllers/searchController')
 // router.get('/chart/:stock_code', chartController.getChart)
 router.get('/chart/:stock_code', chartController2.getChart)
 router.get('/', searchController.searchStockByName)
+router.get('/:stock_id', searchController.getStockById)
 
 module.exports = router
