@@ -13,18 +13,55 @@ exports.getChatRooms = async (req, res) => {
   }
 };
 
-// GET 특정 채팅방 메시지 조회
+// // GET 특정 채팅방 메시지 조회
+// exports.getMessagesByRoom = async (req, res) => {
+//   try {
+//     const { room_id } = req.params;
+//     const messages = await Chat_Room_Message.findAll({
+//         where: { room_id: room_id },
+//         attributes: { exclude: ['room_id'] } // Sequelize에서 특정 컬럼 제외
+//     });
+//     res.json(messages);
+//   } catch (error) {
+//     console.error('Error fetching messages:', error);
+//     res.status(500).json({ error: 'Failed to fetch messages' });
+//   }
+// };
+
+// GET 특정 채팅방의 메시지 및 좋아요 개수 조회
 exports.getMessagesByRoom = async (req, res) => {
   try {
     const { room_id } = req.params;
+    // const userId = req.user.userId; // authenticate 미들웨어를 거치면 이 값을 받을 수 있음
+
+    // 메시지 및 좋아요 수, 좋아요 여부 조회
     const messages = await Chat_Room_Message.findAll({
-        where: { room_id: room_id },
-        attributes: { exclude: ['room_id'] } // Sequelize에서 특정 컬럼 제외
+      where: { room_id: room_id },
+      attributes: ['id', 'message', 'created_at'],
+      include: [
+        {
+          model: Chat_Room_Message_Like,
+          attributes: ['user_id'], // 좋아요한 유저 정보
+        },
+      ],
     });
-    res.json(messages);
+
+    const formattedMessages = messages.map((msg) => {
+      const totalLikes = msg.Chat_Room_Message_Likes.length; // 좋아요 총 개수
+      // const likedByUser = msg.Chat_Room_Message_Likes.some((like) => like.user_id === userId); // 현재 유저가 좋아요 했는지
+      return {
+        id: msg.id,
+        message: msg.message,
+        created_at: msg.created_at,
+        totalLikes: totalLikes,
+        // likedByUser: likedByUser,
+      };
+    });
+
+    res.json(formattedMessages);
   } catch (error) {
-    console.error('Error fetching messages:', error);
-    res.status(500).json({ error: 'Failed to fetch messages' });
+    console.error('Error fetching messages with likes:', error);
+    res.status(500).json({ error: 'Failed to fetch messages with likes' });
   }
 };
 

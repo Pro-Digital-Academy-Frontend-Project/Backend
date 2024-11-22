@@ -7,6 +7,7 @@ const { authenticate } = require('../middleware/authMiddleware')
 router.get('/chat-rooms', chatController.getChatRooms);
 
 /* GET 특정 채팅방 메시지 조회 */
+// router.get('/chat-rooms/:room_id/messages', authenticate, chatController.getMessagesByRoom);
 router.get('/chat-rooms/:room_id/messages', chatController.getMessagesByRoom);
 
 /* POST 메시지 전송 */
