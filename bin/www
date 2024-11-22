@@ -9,6 +9,12 @@ var debug = require('debug')('backend:server')
 var http = require('http')
 
 /**
+ * 채팅 소켓
+ */
+const { Server } = require("socket.io");
+const socketHandler = require("../socket/socketHandler");
+
+/**
  * Get port from environment and store in Express.
  */
 
@@ -20,6 +26,25 @@ app.set('port', port)
  */
 
 var server = http.createServer(app)
+
+/**
+ * Socket.io 설정
+ */
+
+const io = new Server(server, {
+  cors: {
+    // origin: [process.env.CLIENT_URL, "http://localhost:5173"],
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    credentials: true,
+  },
+});
+
+/**
+ * Socket.io 이벤트 핸들링
+ */
+
+socketHandler(io);
 
 /**
  * Listen on provided port, on all network interfaces.
