@@ -31,7 +31,7 @@ exports.getStockById = async (req, res) => {
   const { stock_id } = req.params // 쿼리 파라미터에서 stock_name 가져오기
 
   try {
-    const stocks = await Stock.findAll({
+    const stocks = await Stock.findOne({
       attributes: ['id', 'code', 'stock_name', 'market'],
       where: {
         id: stock_id,
