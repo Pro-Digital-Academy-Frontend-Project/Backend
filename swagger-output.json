@@ -330,6 +330,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "stock_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -341,20 +348,6 @@
           },
           "500": {
             "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "stock_id": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -592,6 +585,44 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/stocks/chart": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "stock_name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/stocks/chart/": {
+      "get": {
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"

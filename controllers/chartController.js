@@ -33,8 +33,6 @@ exports.getChart = async (req, res) => {
       },
     })
 
-    console.log(resp.data)
-
     const data = resp.data
     if (!data) {
       return res.status(500).json({ error: '데이터 조회에 실패했습니다.' })
