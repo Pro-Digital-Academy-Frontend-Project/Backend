@@ -30,3 +30,14 @@ exports.totalRanking = async (req, res) => {
         res.status(500).json({message: err.message})
     }
 }
+
+exports.searchByKeywordName = async (req, res) => {
+    const {keyword} = req.params
+
+    try {
+        const result = await keywordService.getSearchByKeyword(keyword);
+        res.json(result)
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+}

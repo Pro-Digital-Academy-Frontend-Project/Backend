@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "dev": "node ./swagger.js && nodemon ./bin/www",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
@@ -24,7 +25,13 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "sequelize": "^6.37.5",
+<<<<<<< HEAD
     "socket.io": "^4.8.1"
+=======
+    "swagger-autogen": "^2.23.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+>>>>>>> 650f64a2e674a27c2b53af4abbdb51c6cc2f6920
   },
   "devDependencies": {
     "eslint": "^9.15.0"
