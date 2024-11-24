@@ -1,7 +1,7 @@
 // const ChatModel = require('../models/chatModel');
 const {verifyToken} = require("../middleware/authMiddleware")
 
-const { Chat_Room, Chat_Room_Message, Chat_Room_Message_Like } = require('../models') // 모든 모델을 가져옴
+const { Chat_Room, Chat_Room_Message, Chat_Room_Message_Like, User } = require('../models') // 모든 모델을 가져옴
 
 // GET 채팅방 목록 조회
 exports.getChatRooms = async (req, res) => {
@@ -29,7 +29,7 @@ exports.getChatRooms = async (req, res) => {
 //   }
 // };
 
-// GET 특정 채팅방의 메시지 및 좋아요 개수 조회
+// GET 특정 채팅방의 메시지, 좋아요 개수, 좋아요 여부, 유저 닉네임 조회
 exports.getMessagesByRoom = async (req, res) => {
   try {
     const { room_id } = req.params;
@@ -43,6 +43,10 @@ exports.getMessagesByRoom = async (req, res) => {
         {
           model: Chat_Room_Message_Like,
           attributes: ['user_id'], // 좋아요한 유저 정보
+        },
+        {
+          model: User,
+          attributes: ['nickname'], // 유저 닉네임
         },
       ],
     });
@@ -64,6 +68,7 @@ exports.getMessagesByRoom = async (req, res) => {
           created_at: msg.created_at,
           totalLikes: totalLikes,
           likedByUser: false,
+          nickname: msg.User.nickname,
         };
       });
       res.json(formattedMessages);
@@ -79,6 +84,7 @@ exports.getMessagesByRoom = async (req, res) => {
           created_at: msg.created_at,
           totalLikes: totalLikes,
           likedByUser: likedByUser,
+          nickname: msg.User.nickname,
         };
       });
       res.json(formattedMessages);
