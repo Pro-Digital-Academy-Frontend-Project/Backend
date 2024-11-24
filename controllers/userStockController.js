@@ -1,4 +1,5 @@
 const User_Stock = require('../models/User_Stock') // 모델 경로 주의 (대소문자 확인)
+const Stock = require('../models/Stock')
 
 //User_Stock 추가
 exports.addUserStock = async (req, res) => {
@@ -50,13 +51,28 @@ exports.deleteUserStock = async (req, res) => {
 exports.getUserStock = async (req, res) => {
   const user_id = req.user.userId
   try {
-    // 특정 사용자에 대한 모든 키워드 조회
+    // 특정 사용자에 대한 모든 종목 조회
     const userStocks = await User_Stock.findAll({
-      where: {
-        user_id,
-      },
+      where: { user_id },
+      attributes: ['id', 'stock_id', 'alarm_status'], // 필요한 필드만 선택
+      include: [
+        {
+          model: Stock, // Stock 테이블과 관계 연결
+          attributes: ['stock_name', 'code'], // 필요한 필드만 포함
+        },
+      ],
     })
-    res.status(200).json({ userStocks })
+
+    // 응답 데이터 가공
+    const response = userStocks.map(stock => ({
+      id: stock.id,
+      stock_id: stock.stock_id,
+      alarm_status: stock.alarm_status,
+      stock_name: stock.Stock.stock_name, // Stock 정보 추가
+      stock_code: stock.Stock.code,
+    }))
+
+    res.status(200).json({ userStocks: response })
   } catch (error) {
     console.error('사용자 종목 조회 오류:', error)
     res.status(500).json({ error: '사용자 종목 조회에 실패했습니다.' })
