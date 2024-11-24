@@ -234,6 +234,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -245,20 +252,6 @@
           },
           "500": {
             "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_keyword_id": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
           }
         }
       },
@@ -577,6 +570,36 @@
         }
       }
     },
+    "/api/chat/messages/{message_id}/like-status": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/keywords/stocks/{stock_id}": {
       "get": {
         "description": "",
@@ -689,6 +712,32 @@
           {
             "name": "stock_name",
             "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/stocks/{stock_id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "stock_id",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string"
             }
