@@ -44,7 +44,7 @@ exports.getStocksRankingByKeyword = async keyword_id => {
         },
       ],
       order: [['weight', 'DESC']],
-      limit: 5,
+      limit: 20,
     })
 
     const stockRankings = stocks.map(stock => ({
