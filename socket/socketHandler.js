@@ -36,7 +36,7 @@ const socketHandler = (io) => {
   
       // 전체 메시지 전송 처리
       socket.on("sendTotalMessage", (data) => {
-        const { message_id, roomId, message, created_at } = data;
+        const { message_id, roomId, message, created_at, nickname } = data;
         console.log("sendTotalMessage");
         console.log(`[${roomId}] 메시지:`, data);
         io.to(roomId).emit("receiveTotalMessage", {
@@ -44,6 +44,7 @@ const socketHandler = (io) => {
           message_id: `${message_id}`,
           message: `${message}`,
           created_at: `${created_at}`,
+          nickname: `${nickname}`,
         });
       });
 

@@ -577,6 +577,36 @@
         }
       }
     },
+    "/api/chat/messages/{message_id}/like-status": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/keywords/stocks/{stock_id}": {
       "get": {
         "description": "",
