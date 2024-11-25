@@ -95,6 +95,7 @@ exports.getSearchByKeyword = async (keywordName) => {
                 }
             },
             attributes: [
+                [Sequelize.fn('MAX', Sequelize.col('id')), 'id'],
                 'keyword', // keyword 컬럼
                 [Sequelize.fn('SUM', Sequelize.col('weight')), 'totalWeight'] // weight 값을 합산하여 totalWeight로 반환
             ],
