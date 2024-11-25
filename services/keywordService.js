@@ -83,24 +83,25 @@ exports.getTotalRanking = async () => {
   }
 }
 
-exports.getSearchByKeyword = async keywordName => {
-  try {
-    const keywords = await Keyword.findAll({
-      where: {
-        keyword: {
-          [Sequelize.Op.like]: `${keywordName}%`, // 'keyword' 컬럼에서 'keywordName'으로 시작하는 값을 찾기
-        },
-      },
-      attributes: [
-        'keyword', // keyword 컬럼
-        [Sequelize.fn('SUM', Sequelize.col('weight')), 'totalWeight'], // weight 값을 합산하여 totalWeight로 반환
-      ],
-      group: ['keyword'], // keyword 기준으로 그룹화
-      order: [
-        [Sequelize.fn('SUM', Sequelize.col('weight')), 'DESC'], // totalWeight가 높은 순서대로 정렬
-      ],
-      limit: 10, // 최대 10개만 반환
-    })
+exports.getSearchByKeyword = async (keywordName) => {
+    try {
+        const keywords = await Keyword.findAll({
+            where: {
+                keyword: {
+                    [Sequelize.Op.like]: `${keywordName}%` // 'keyword' 컬럼에서 'keywordName'으로 시작하는 값을 찾기
+                }
+            },
+            attributes: [
+                [Sequelize.fn('MAX', Sequelize.col('id')), 'id'],
+                'keyword', // keyword 컬럼
+                [Sequelize.fn('SUM', Sequelize.col('weight')), 'totalWeight'] // weight 값을 합산하여 totalWeight로 반환
+            ],
+            group: ['keyword'], // keyword 기준으로 그룹화
+            order: [
+                [Sequelize.fn('SUM', Sequelize.col('weight')), 'DESC'] // totalWeight가 높은 순서대로 정렬
+            ],
+            limit: 10 // 최대 10개만 반환
+        });
 
     return keywords
   } catch (err) {
