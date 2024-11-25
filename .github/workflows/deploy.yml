@@ -64,4 +64,4 @@ jobs:
             docker rm stockey-express || true
 
             # 새로운 컨테이너 실행 (app-network 네트워크와 연결)
-            docker run -d --name stockey-express --network app-network -e DB_HOST=${{ secrets.SERVER_HOST }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_DATABASE=${{ secrets.DB_DATABASE }} -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
+            docker run -d --name stockey-express --network app-network -e DB_HOST=${{ secrets.SERVER_HOST }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_DATABASE=${{ secrets.DB_DATABASE }} -e APP_KEY=${{ secrets.APP_KEY }} -e APP_SECRET=${{ secrets.APP_SECRET }} -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest

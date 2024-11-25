@@ -2,8 +2,7 @@ const Stock = require('../models/Stock')
 
 // 주식 종목 검색
 exports.searchStockByName = async (req, res) => {
-  const { stock_name } = req.query // 쿼리 파라미터에서 stock_name 가져오기
-  console.log(stock_name)
+  const { stock_name } = req.params // 쿼리 파라미터에서 stock_name 가져오기
   try {
     const stocks = await Stock.findAll({
       attributes: ['id', 'code', 'stock_name', 'market'],
