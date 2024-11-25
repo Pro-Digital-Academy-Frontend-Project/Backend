@@ -63,6 +63,15 @@ app.use('/users', usersRouter)
 app.use('/api/chat', chatRouter)
 app.use('/keywords', keywordRouter)
 app.use('/stocks', stockRouter)
+// const mainRouter = express.Router()
+// mainRouter.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+// mainRouter.use('/', indexRouter)
+// mainRouter.use('/users', usersRouter)
+// mainRouter.use('/chat', chatRouter)
+// mainRouter.use('/keywords', keywordRouter)
+// mainRouter.use('/stocks', stockRouter)
+
+// app.use('/api', mainRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
