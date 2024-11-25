@@ -40,6 +40,10 @@ Chat_Room_Message_Like.belongsTo(Chat_Room_Message, {
 User.hasMany(Chat_Room_Message_Like, { foreignKey: 'user_id' })
 Chat_Room_Message_Like.belongsTo(User, { foreignKey: 'user_id' })
 
+// 9. User와 Chat_Room_Message: 1:N 관계 (준승 추가)
+User.hasMany(Chat_Room_Message, { foreignKey: 'user_id' });
+Chat_Room_Message.belongsTo(User, { foreignKey: 'user_id' });
+
 // 모델 내보내기
 module.exports = {
   User,
