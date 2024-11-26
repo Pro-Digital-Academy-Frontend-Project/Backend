@@ -1,5 +1,6 @@
 const User_Stock = require('../models/User_Stock') // 모델 경로 주의 (대소문자 확인)
 const Stock = require('../models/Stock')
+const sequelize = require('sequelize')
 
 //User_Stock 추가
 exports.addUserStock = async (req, res) => {
@@ -99,5 +100,27 @@ exports.updateUserStock = async (req, res) => {
   } catch (error) {
     console.error('즐겨찾기 업데이트 오류:', error)
     res.status(500).json({ error: '즐겨찾기 업데이트에 실패했습니다.' })
+  }
+}
+
+exports.getStockLikeRankings = async (req, res) => {
+  try {
+    const rankings = await User_Stock.findAll({
+      attributes: [
+        'stock_id',
+        [sequelize.fn('COUNT', sequelize.col('stock_id')), 'count'],
+      ],
+      group: ['stock_id'],
+      order: [
+        [sequelize.literal('count'), 'DESC'],
+        ['stock_id', 'ASC'],
+      ],
+      limit: 10, // 상위 10개의 키워드만
+    })
+
+    res.status(200).json({ rankings })
+  } catch (error) {
+    console.error('종목 랭킹 조회 오류:', error)
+    res.status(500).json({ error: '종목 랭킹 조회에 실패했습니다.' })
   }
 }
