@@ -1,4 +1,6 @@
+const Keyword = require('../models/Keyword')
 const User_Keyword = require('../models/User_Keyword') // 모델 경로 주의 (대소문자 확인)
+const sequelize = require('sequelize')
 
 //user_keyword 추가
 exports.addUserKeyword = async (req, res) => {
@@ -45,23 +47,42 @@ exports.deleteUserKeyword = async (req, res) => {
   }
 }
 
-// 특정 user의 user_keyword 조회
+// // 특정 user의 user_keyword 조회
 exports.getUserKeyword = async (req, res) => {
-  const user_id = req.user.userId
+  const user_id = req.user.userId;
   try {
-    // 특정 사용자에 대한 모든 키워드 조회
-    const userKeywords = await User_Keyword.findAll({
-      where: {
-        user_id,
-      },
-    })
-    res.status(200).json({ userKeywords })
-  } catch (error) {
-    console.error('사용자 키워드 조회 오류:', error)
-    res.status(500).json({ error: '사용자 키워드 조회에 실패했습니다.' })
-  }
-}
+    // user_keyword 테이블에서 특정 사용자의 키워드 정보 조회
+    const userKeywordList = await User_Keyword.findAll({
+      where: { user_id },
+      raw: true,
+    });    
 
+    // 각 userKeyword에 대해 가장 큰 keyword_id를 가져옵니다.
+    const userKeywords = await Promise.all(userKeywordList.map(async (userKeyword) => {
+      const keyword = await Keyword.findOne({
+        where: { keyword: userKeyword.keyword },  // 동일한 keyword를 기준으로
+        attributes: [[sequelize.fn('MAX', sequelize.col('id')), 'keyword_id']],  // 가장 큰 id를 가져옵니다.
+        raw: true,
+      });
+
+      // userKeyword에 keyword_id를 추가하여 반환
+      return {
+        ...userKeyword,
+        keyword_id: keyword ? keyword.keyword_id : null,  // 가장 큰 id를 keyword_id로 추가
+      };
+    }));
+
+    console.log(userKeywords)
+    
+    // userKeyword와 가장 큰 keyword_id를 함께 응답
+    res.status(200).json({ userKeywords });
+  } catch (error) {
+    console.error('사용자 키워드 조회 오류:', error);
+    res.status(500).json({ error: '사용자 키워드 조회에 실패했습니다.' });
+  }
+};
+
+//user_keyword의 알림 상태 업데이트
 exports.updateUserKeyword = async (req, res) => {
   const user_id = req.user.userId
   const { id, alarm_status } = req.body
@@ -70,7 +91,7 @@ exports.updateUserKeyword = async (req, res) => {
       { alarm_status }, // 업데이트할 필드
       {
         where: {
-          id: id, // 조건: user_id가 일치하는 경우
+          id: id,
           user_id: user_id,
         },
       }
@@ -82,5 +103,28 @@ exports.updateUserKeyword = async (req, res) => {
   } catch (error) {
     console.error('즐겨찾기 업데이트 오류:', error)
     res.status(500).json({ error: '즐겨찾기 업데이트에 실패했습니다.' })
+  }
+}
+
+//user keyword 즐겨찾기 랭킹
+exports.getKeywordLikeRankings = async (req, res) => {
+  try {
+    const rankings = await User_Keyword.findAll({
+      attributes: [
+        'keyword',
+        [sequelize.fn('COUNT', sequelize.col('keyword')), 'count'],
+      ],
+      group: ['keyword'],
+      order: [
+        [sequelize.literal('count'), 'DESC'],
+        ['keyword', 'ASC'],
+      ],
+      limit: 10, // 상위 10개의 키워드만
+    })
+
+    res.status(200).json({ rankings })
+  } catch (error) {
+    console.error('키워드 랭킹 조회 오류:', error)
+    res.status(500).json({ error: '키워드 랭킹 조회에 실패했습니다.' })
   }
 }

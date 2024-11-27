@@ -2,8 +2,8 @@ const axios = require('axios')
 
 function getDateRange() {
   const today = new Date()
-  const sixMonthsAgo = new Date(today)
-  sixMonthsAgo.setMonth(today.getMonth() - 6)
+  const twelveMonthsAgo = new Date(today)
+  twelveMonthsAgo.setMonth(today.getMonth() - 12)
 
   const formatDateTime = date =>
     date.getFullYear().toString() +
@@ -11,19 +11,18 @@ function getDateRange() {
     date.getDate().toString().padStart(2, '0')
 
   return {
-    start: formatDateTime(sixMonthsAgo),
+    start: formatDateTime(twelveMonthsAgo),
     end: formatDateTime(today),
   }
 }
 
 exports.getChart = async (req, res) => {
-  const stock_code = req.params.stock_code
-  console.log(stock_code)
+  const { stock_code, chart_period } = req.params
   try {
     const { start, end } = getDateRange()
-    const baseUrl = `https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=${stock_code}&FID_INPUT_DATE_1=${start}&FID_INPUT_DATE_2=${end}&FID_PERIOD_DIV_CODE=D&FID_ORG_ADJ_PRC=0`
+    const baseUrl = `https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=${stock_code}&FID_INPUT_DATE_1=${start}&FID_INPUT_DATE_2=${end}&FID_PERIOD_DIV_CODE=${chart_period}&FID_ORG_ADJ_PRC=0`
     const token =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6Ijk3YWEzNGQ0LTE1ZTAtNGU2Yy04NmU0LTBkMTllNjA3ZDc1NiIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjMxODMzMywiaWF0IjoxNzMyMjMxOTMzLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.dQr9atlLU0zkEnMwNPKZ-KTwqOJoN0mJDhL5RmGtX-XA5qwh8435V9_1LdhDPo9igQdgPjAKoXhqeDNstlkhBw'
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjBjMTJkYTVlLWFmNGMtNDE2MC05ZTZkLWE5ZDVlY2Y1MmE2NSIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjc0NDgwMSwiaWF0IjoxNzMyNjU4NDAxLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.huSWEVbi_ZDwxWvUaOUceKu0-1tlChpxOscLOG6Ay2OaGoNcnG9V8IPz-aPjxuGRsECk03nb8YLJw1sl4teMlg'
 
     const headers = {
       'Content-Type': 'application/json; charset=utf-8',

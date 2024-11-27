@@ -27,6 +27,23 @@ exports.registerUser = async (req, res) => {
   }
 }
 
+exports.getUserInfo = async (req, res) => {
+  const user_id = req.user.userId
+  try {
+    const user = await User.findOne({
+      where: {
+        id: user_id,
+      },
+    })
+    return res
+      .status(200)
+      .json({ nickname: user.nickname, slack_id: user.slack_id })
+  } catch (error) {
+    console.error('사용자 조회 오류:', error)
+    res.status(500).json({ error: '사용자 조회에 실패했습니다.' })
+  }
+}
+
 exports.loginUser = async (req, res) => {
   const { account_id, password } = req.body
   if (!account_id || !password) {
