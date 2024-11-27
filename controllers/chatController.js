@@ -1,7 +1,9 @@
 // const ChatModel = require('../models/chatModel');
 const {verifyToken} = require("../middleware/authMiddleware")
+const sequelize = require('sequelize')
 
-const { Chat_Room, Chat_Room_Message, Chat_Room_Message_Like, User } = require('../models') // 모든 모델을 가져옴
+
+const { Chat_Room, Chat_Room_Message, Chat_Room_Message_Like, User, User_Keyword, Keyword } = require('../models') // 모든 모델을 가져옴
 
 // GET 채팅방 목록 조회
 exports.getChatRooms = async (req, res) => {
@@ -173,3 +175,81 @@ exports.getLikeStatus = async (req, res) => {
     res.status(500).json({ error: 'Failed to check like status' });
   }
 };
+
+// GET 가중치 기준 키워드 순위 Top5 리스트 조회
+exports.getWeightRankings = async (req, res) => {
+  try {
+    const rankings = await Keyword.findAll({
+      attributes: [
+        'keyword',
+        [sequelize.fn('SUM', sequelize.col('weight')), 'totalWeight'],
+      ],
+      group: ['keyword'],
+      order: [
+        [sequelize.literal('totalWeight'), 'DESC'],
+        ['keyword', 'ASC'],
+      ],
+      limit: 5, // 상위 5개의 키워드만
+    })
+
+    // Chat_Room 테이블에서 각 keyword에 대응하는 id를 추가
+    const results = await Promise.all(
+      rankings.map(async (ranking) => {
+        const chatRoom = await Chat_Room.findOne({
+          attributes: ['id'],
+          where: { name: ranking.keyword },
+        });
+
+        return {
+          room_id: chatRoom ? chatRoom.id : null, // Chat_Room이 없을 경우 null 처리
+          keyword: ranking.keyword,
+        };
+      })
+    );
+
+    res.status(200).json({ results })
+  } catch (error) {
+    console.error('키워드 랭킹 조회 오류:', error)
+    res.status(500).json({ error: '키워드 랭킹 조회에 실패했습니다.' })
+  }
+}
+
+// GET 유저 즐겨찾기 수 기준 키워드 순위 Top5 리스트 조회
+exports.getBookmarkRankings = async (req, res) => {
+  try {
+    // 유저 즐겨찾기 수 기준 상위 5개 키워드 뽑기
+    const rankings = await User_Keyword.findAll({
+      attributes: [
+        'keyword',
+        [sequelize.fn('COUNT', sequelize.col('keyword')), 'count'],
+      ],
+      group: ['keyword'],
+      order: [
+        [sequelize.literal('count'), 'DESC'],
+        ['keyword', 'ASC'],
+      ],
+      limit: 5, // 상위 5개의 키워드만
+    })
+
+    // Chat_Room 테이블에서 각 keyword에 대응하는 id를 추가
+    const results = await Promise.all(
+      rankings.map(async (ranking) => {
+        const chatRoom = await Chat_Room.findOne({
+          attributes: ['id'],
+          where: { name: ranking.keyword },
+        });
+
+        return {
+          room_id: chatRoom ? chatRoom.id : null, // Chat_Room이 없을 경우 null 처리
+          keyword: ranking.keyword,
+          count: ranking.get('count'),
+        };
+      })
+    );
+
+    res.status(200).json({ results })
+  } catch (error) {
+    console.error('키워드 랭킹 조회 오류:', error)
+    res.status(500).json({ error: '키워드 랭킹 조회에 실패했습니다.' })
+  }
+}

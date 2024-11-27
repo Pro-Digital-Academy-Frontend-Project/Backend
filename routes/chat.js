@@ -26,4 +26,10 @@ router.delete('/messages/:message_id/unlike', authenticate, chatController.unlik
 /* GET 로그인된 유저의 특정 메시지의 좋아요 여부 조회 */
 router.get('/messages/:message_id/like-status', authenticate, chatController.getLikeStatus);
 
+/* GET 가중치 기준 키워드 순위 Top5 리스트 조회 */
+router.get('/weight/rankings', chatController.getWeightRankings);
+
+/* GET 유저 즐겨찾기 수 기준 키워드 순위 Top5 리스트 조회 */
+router.get('/bookmark/rankings', chatController.getBookmarkRankings);
+
 module.exports = router;
