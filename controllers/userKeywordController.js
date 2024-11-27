@@ -1,4 +1,5 @@
 const User_Keyword = require('../models/User_Keyword') // 모델 경로 주의 (대소문자 확인)
+const sequelize = require('sequelize')
 
 //user_keyword 추가
 exports.addUserKeyword = async (req, res) => {
@@ -62,6 +63,7 @@ exports.getUserKeyword = async (req, res) => {
   }
 }
 
+//user_keyword의 알림 상태 업데이트
 exports.updateUserKeyword = async (req, res) => {
   const user_id = req.user.userId
   const { id, alarm_status } = req.body
@@ -70,7 +72,7 @@ exports.updateUserKeyword = async (req, res) => {
       { alarm_status }, // 업데이트할 필드
       {
         where: {
-          id: id, // 조건: user_id가 일치하는 경우
+          id: id,
           user_id: user_id,
         },
       }
@@ -82,5 +84,28 @@ exports.updateUserKeyword = async (req, res) => {
   } catch (error) {
     console.error('즐겨찾기 업데이트 오류:', error)
     res.status(500).json({ error: '즐겨찾기 업데이트에 실패했습니다.' })
+  }
+}
+
+//user keyword 즐겨찾기 랭킹
+exports.getKeywordLikeRankings = async (req, res) => {
+  try {
+    const rankings = await User_Keyword.findAll({
+      attributes: [
+        'keyword',
+        [sequelize.fn('COUNT', sequelize.col('keyword')), 'count'],
+      ],
+      group: ['keyword'],
+      order: [
+        [sequelize.literal('count'), 'DESC'],
+        ['keyword', 'ASC'],
+      ],
+      limit: 10, // 상위 10개의 키워드만
+    })
+
+    res.status(200).json({ rankings })
+  } catch (error) {
+    console.error('키워드 랭킹 조회 오류:', error)
+    res.status(500).json({ error: '키워드 랭킹 조회에 실패했습니다.' })
   }
 }

@@ -17,12 +17,12 @@ function getDateRange() {
 }
 
 exports.getChart = async (req, res) => {
-  const { stock_code, chart_period } = req.params;
+  const { stock_code, chart_period } = req.params
   try {
     const { start, end } = getDateRange()
     const baseUrl = `https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=${stock_code}&FID_INPUT_DATE_1=${start}&FID_INPUT_DATE_2=${end}&FID_PERIOD_DIV_CODE=${chart_period}&FID_ORG_ADJ_PRC=0`
     const token =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjYxNWRhZjc5LTg1YjgtNGQ1Zi04MjYwLWNjMGEzMGRiNmFjNyIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjU4MDIwMiwiaWF0IjoxNzMyNDkzODAyLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.Kuyxsi7rKeB9Twzcnlcq1jAN6d_vqGIHOztB77RbucOyOKi0TbYY3Sbg6ZaQaQdBYU4pqwLT6ywnQ15JeU-S0g'
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjBjMTJkYTVlLWFmNGMtNDE2MC05ZTZkLWE5ZDVlY2Y1MmE2NSIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjc0NDgwMSwiaWF0IjoxNzMyNjU4NDAxLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.huSWEVbi_ZDwxWvUaOUceKu0-1tlChpxOscLOG6Ay2OaGoNcnG9V8IPz-aPjxuGRsECk03nb8YLJw1sl4teMlg'
 
     const headers = {
       'Content-Type': 'application/json; charset=utf-8',
