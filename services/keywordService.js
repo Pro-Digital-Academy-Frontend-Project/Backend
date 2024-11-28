@@ -1,5 +1,5 @@
 const { sequelize, Stock, Keyword } = require('../models')
-const { Sequelize, json } = require('sequelize')
+const { Sequelize } = require('sequelize')
 
 exports.getKeywordRankingByStock = async stockId => {
   try {
