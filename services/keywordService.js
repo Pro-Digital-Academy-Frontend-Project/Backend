@@ -1,5 +1,5 @@
 const { sequelize, Stock, Keyword } = require('../models')
-const { Sequelize } = require('sequelize')
+const { Sequelize, json } = require('sequelize')
 
 exports.getKeywordRankingByStock = async stockId => {
   try {
@@ -106,5 +106,22 @@ exports.getSearchByKeyword = async (keywordName) => {
     return keywords
   } catch (err) {
     throw new Error(err)
+  }
+}
+
+exports.getTopKeyword = async () => {
+  try {
+    const keyword = await sequelize.query(
+      `SELECT keyword, MAX(id) AS keyword_id, SUM(weight) AS totalWeight
+            FROM Keyword
+            GROUP BY keyword
+            ORDER BY totalWeight DESC
+            LIMIT 1`,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+
+    return keyword;    
+  } catch (error) {
+    throw new Error(error)
   }
 }
