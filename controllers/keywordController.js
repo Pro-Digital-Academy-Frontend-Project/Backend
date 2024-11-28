@@ -41,3 +41,12 @@ exports.searchByKeywordName = async (req, res) => {
         res.status(500).json({message: err.message})
     }
 }
+
+exports.topKeyword = async (req, res) => {
+    try {
+        const result = await keywordService.getTopKeyword();
+        res.json(result)
+    } catch (error) {
+        res.status(500).json({message: err.message})
+    }
+}
