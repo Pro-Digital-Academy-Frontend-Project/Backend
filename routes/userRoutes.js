@@ -37,5 +37,6 @@ router.get('/stocks/rankings', userStockController.getStockLikeRankings)
 router.post('/stocks', authenticate, userStockController.addUserStock)
 router.delete('/stocks', authenticate, userStockController.deleteUserStock)
 router.put('/stocks', authenticate, userStockController.updateUserStock)
+router.get('/stocks/rankings/userLike', userStockController.getStcokRankByUserLike)
 
 module.exports = router
