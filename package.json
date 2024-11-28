@@ -7,7 +7,8 @@
     "dev": "node ./swagger.js && nodemon ./bin/www",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,scss}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,json,css,scss}\""
   },
   "dependencies": {
     "axios": "^1.7.7",
