@@ -86,6 +86,7 @@ exports.getUserKeyword = async (req, res) => {
 exports.updateUserKeyword = async (req, res) => {
   const user_id = req.user.userId
   const { id, alarm_status } = req.body
+  console.log(id, alarm_status)
   try {
     const [updatedRows] = await User_Keyword.update(
       { alarm_status }, // 업데이트할 필드
