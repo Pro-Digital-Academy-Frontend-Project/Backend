@@ -108,3 +108,20 @@ exports.getSearchByKeyword = async (keywordName) => {
     throw new Error(err)
   }
 }
+
+exports.getTopKeyword = async () => {
+  try {
+    const keyword = await sequelize.query(
+      `SELECT keyword, MAX(id) AS keyword_id, SUM(weight) AS totalWeight
+            FROM Keyword
+            GROUP BY keyword
+            ORDER BY totalWeight DESC
+            LIMIT 1`,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+
+    return keyword;    
+  } catch (error) {
+    throw new Error(error)
+  }
+}
