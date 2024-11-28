@@ -22,7 +22,7 @@ exports.getChart = async (req, res) => {
     const { start, end } = getDateRange()
     const baseUrl = `https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=${stock_code}&FID_INPUT_DATE_1=${start}&FID_INPUT_DATE_2=${end}&FID_PERIOD_DIV_CODE=${chart_period}&FID_ORG_ADJ_PRC=0`
     const token =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjBjMTJkYTVlLWFmNGMtNDE2MC05ZTZkLWE5ZDVlY2Y1MmE2NSIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjc0NDgwMSwiaWF0IjoxNzMyNjU4NDAxLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.huSWEVbi_ZDwxWvUaOUceKu0-1tlChpxOscLOG6Ay2OaGoNcnG9V8IPz-aPjxuGRsECk03nb8YLJw1sl4teMlg'
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImNmYjk3MTkxLTliY2EtNGMxZS04OGEwLWUwYzBlODdmMjA0MCIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjgyNzYwMSwiaWF0IjoxNzMyNzQxMjAxLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.5-hQGbJSE_vmVqOrc8KcL7gQ9p31ak4VcoGhHaF2IceKkpOvja4a9LpY84datG5JSs-q-AHhr_TCGqtohuKK5g'
 
     const headers = {
       'Content-Type': 'application/json; charset=utf-8',
