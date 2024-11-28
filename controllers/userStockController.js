@@ -112,13 +112,41 @@ exports.getStockLikeRankings = async (req, res) => {
       ],
       group: ['stock_id'],
       order: [
-        [sequelize.literal('count'), 'DESC'],
+        [sequelize.literal('count'), 'DESC'], 
         ['stock_id', 'ASC'],
       ],
       limit: 10, // 상위 10개의 키워드만
     })
 
     res.status(200).json({ rankings })
+  } catch (error) {
+    console.error('종목 랭킹 조회 오류:', error)
+    res.status(500).json({ error: '종목 랭킹 조회에 실패했습니다.' })
+  }
+}
+
+exports.getStcokRankByUserLike = async (req, res) => {
+  try {
+    const rankings = await User_Stock.findAll({
+      attributes: [
+        'stock_id',
+        [sequelize.fn('COUNT', sequelize.col('stock_id')), 'count'],
+      ],
+      group: ['stock_id', 'Stock.id'],
+      order: [
+        [sequelize.fn('COUNT', sequelize.col('stock_id')), 'DESC'],
+        [sequelize.col('Stock.id'), 'ASC'],
+      ],
+      limit: 10,
+      include: [
+        {
+          model: Stock,
+          attributes: ['id', 'stock_name', 'code'],
+        },
+      ],
+    });
+
+    res.json(rankings)
   } catch (error) {
     console.error('종목 랭킹 조회 오류:', error)
     res.status(500).json({ error: '종목 랭킹 조회에 실패했습니다.' })
