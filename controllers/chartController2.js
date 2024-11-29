@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { getToken } = require('../services/tokenService')
 
 function getDateRange() {
   const today = new Date()
@@ -21,7 +22,8 @@ exports.getChart = async (req, res) => {
   try {
     const { start, end } = getDateRange()
     const baseUrl = `https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=${stock_code}&FID_INPUT_DATE_1=${start}&FID_INPUT_DATE_2=${end}&FID_PERIOD_DIV_CODE=${chart_period}&FID_ORG_ADJ_PRC=0`
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImNmYjk3MTkxLTliY2EtNGMxZS04OGEwLWUwYzBlODdmMjA0MCIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjgyNzYwMSwiaWF0IjoxNzMyNzQxMjAxLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.5-hQGbJSE_vmVqOrc8KcL7gQ9p31ak4VcoGhHaF2IceKkpOvja4a9LpY84datG5JSs-q-AHhr_TCGqtohuKK5g'
+    // const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImVjZjY3YTNkLTgzN2YtNGY0Ny05NjU1LTU0YjVjOTkzNmMzNSIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjkxNDAwMSwiaWF0IjoxNzMyODI3NjAxLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.--Q_T4rY0BTcFumHqvSLZ-0OLVswT8nhtGpFTLcHfLu9ZtPGIZei2EV1mt1-gjKBWLfN_x3iKpK3XVD1cGPr8Q'
+    const token = getToken();
 
     const headers = {
       'Content-Type': 'application/json; charset=utf-8',
@@ -58,3 +60,6 @@ exports.getChart = async (req, res) => {
     res.status(500).json({ error: 'API 호출 중 오류가 발생했습니다.' })
   }
 }
+
+
+
