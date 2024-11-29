@@ -29,6 +29,7 @@ var app = express()
 
 // 데이터베이스 연결 및 동기화
 const sequelize = require('./db') // sequelize 연결을 가져옵니다.
+const { fetchToken, renewToken } = require('./services/tokenService')
 
 // 데이터베이스 동기화
 sequelize
@@ -39,6 +40,19 @@ sequelize
   .catch(err => {
     console.error('데이터베이스 동기화 실패:', err)
   })
+
+// 초기화 시 토큰 갱신
+renewToken()
+
+// 주기적 토큰 갱신 (8시간마다)
+setInterval(async () => {
+  try {
+    await renewToken();
+    console.log('정기 토큰 갱신 완료');
+  } catch (error) {
+    console.error('정기 토큰 갱신 오류:', error.message);
+  }
+}, 8 * 60 * 60 * 1000); // 8시간
 
 app.use(
   cors({
@@ -57,12 +71,6 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-// app.use('/api/', indexRouter)
-// app.use('/api/users', usersRouter)
-// app.use('/api/api/chat', chatRouter)
-// app.use('/api/keywords', keywordRouter)
-// app.use('/api/stocks', stockRouter)
 const mainRouter = express.Router()
 mainRouter.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 mainRouter.use('/', indexRouter)
