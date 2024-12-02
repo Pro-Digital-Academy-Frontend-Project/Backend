@@ -59,7 +59,7 @@ setInterval(async () => {
 // 초기화 시 뉴스 기사 크롤링 갱신
 fetchNews()
 
-// 주기적 큐스 크롤링 (30분마다)
+// 주기적 뉴스 크롤링 (30분마다)
 setInterval(async () => {
   try {
     await setInterval();

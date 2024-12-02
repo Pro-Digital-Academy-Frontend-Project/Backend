@@ -1,17 +1,43 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const sequelize = require('sequelize')
 require('dotenv').config();
 
+const { Keyword } = require('../models') // 모든 모델을 가져옴
+
 let newsList = [];
-const BASE_URL = `https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EA%B8%B0%EC%97%85+%EC%8B%A0%ED%95%9C%EC%A7%80%EC%A3%BC`;
+
+// 키워드 1위 가져오기
+const getFirstRanking = async () => {
+    try {
+       const firstKeyword = await Keyword.findAll({
+        attributes: [
+          'keyword',
+          [sequelize.fn('SUM', sequelize.col('weight')), 'totalWeight'],
+        ],
+        group: ['keyword'],
+        order: [
+          [sequelize.literal('totalWeight'), 'DESC'],
+          ['keyword', 'ASC'],
+        ],
+        limit: 1, // 상위 1개 키워드
+      })
+      return firstKeyword;
+
+    } catch (error) {
+      console.error('키워드 랭킹 1위 조회 오류:', error)
+    }
+}
+
+const BASE_URL = `https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=`;
+
 
 // 뉴스를 가져오는 함수
 const fetchNews = async () => {
     try {
-        const res = await axios.get(BASE_URL);
+        const firstKeyword = await getFirstRanking();
+        const res = await axios.get(`${BASE_URL+firstKeyword[0].dataValues.keyword.trim()}+신한지주`);
         const $ = cheerio.load(res.data);
-    
-        // console.log(res.data);
     
         newsList = $('.group_news .bx')
           .map((i, elem) => {
