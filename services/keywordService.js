@@ -20,6 +20,7 @@ exports.getKeywordRankingByStock = async stockId => {
     return {
       stock_name: keywords[0]?.Stock?.dataValues?.stock_name,
       keyword_rankings: keywords.map(keyword => ({
+        id: keyword.id,
         keyword: keyword.keyword,
         weight: keyword.weight,
       })),
@@ -47,10 +48,13 @@ exports.getStocksRankingByKeyword = async keyword_id => {
       limit: 20,
     })
 
+    console.log(stocks)
+
     const stockRankings = stocks.map(stock => ({
       id: stock.Stock?.id,
       code: stock.Stock?.code,
       stock_name: stock.Stock?.stock_name,
+      weight: stock.weight,
     }))
 
     return {
