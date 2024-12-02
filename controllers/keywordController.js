@@ -47,6 +47,6 @@ exports.topKeyword = async (req, res) => {
         const result = await keywordService.getTopKeyword();
         res.json(result)
     } catch (error) {
-        res.status(500).json({message: err.message})
+        res.status(500).json({message: error.message})
     }
 }
