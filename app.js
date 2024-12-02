@@ -42,17 +42,20 @@ sequelize
   })
 
 // 초기화 시 토큰 갱신
-renewToken()
+// renewToken()
 
 // 주기적 토큰 갱신 (8시간마다)
-setInterval(async () => {
-  try {
-    await renewToken();
-    console.log('정기 토큰 갱신 완료');
-  } catch (error) {
-    console.error('정기 토큰 갱신 오류:', error.message);
-  }
-}, 4 * 60 * 60 * 1000); // 8시간
+setInterval(
+  async () => {
+    try {
+      await renewToken()
+      console.log('정기 토큰 갱신 완료')
+    } catch (error) {
+      console.error('정기 토큰 갱신 오류:', error.message)
+    }
+  },
+  4 * 60 * 60 * 1000
+) // 8시간
 
 app.use(
   cors({
@@ -95,6 +98,6 @@ app.use(function (err, req, res, next) {
   res.json(res.locals)
 })
 
-require('./controllers/slackScheduler');
+require('./controllers/slackScheduler')
 
 module.exports = app
