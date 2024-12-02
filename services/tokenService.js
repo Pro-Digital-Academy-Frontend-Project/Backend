@@ -6,7 +6,7 @@ let token = null
 // 토큰을 갱신하는 함수
 const renewToken = async () => {
     try {
-        const baseUrl = 'https://openapivts.koreainvestment.com:29443/oauth2/tokenP';
+        const baseUrl = 'https://openapivts.koreainvestment.com:29443/oauth2/tokenP'; 
 
         const bodyData = {
           grant_type: 'client_credentials',
