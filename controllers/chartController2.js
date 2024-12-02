@@ -4,7 +4,7 @@ const { getToken } = require('../services/tokenService')
 function getDateRange() {
   const today = new Date()
   const twelveMonthsAgo = new Date(today)
-  twelveMonthsAgo.setMonth(today.getMonth() - 12)
+  twelveMonthsAgo.setMonth(today.getMonth() - 36)
 
   const formatDateTime = date =>
     date.getFullYear().toString() +
