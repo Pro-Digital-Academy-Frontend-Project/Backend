@@ -24,12 +24,14 @@ var chatRouter = require('./routes/chat')
 var usersRouter = require('./routes/userRoutes')
 const keywordRouter = require('./routes/keywordRoutes')
 const stockRouter = require('./routes/stockRoutes')
+const newsRouter = require('./routes/newsRoutes')
 
 var app = express()
 
 // 데이터베이스 연결 및 동기화
 const sequelize = require('./db') // sequelize 연결을 가져옵니다.
 const { fetchToken, renewToken } = require('./services/tokenService')
+const { fetchNews } = require('./services/newsService')
 
 // 데이터베이스 동기화
 sequelize
@@ -44,18 +46,28 @@ sequelize
 // 초기화 시 토큰 갱신
 // renewToken()
 
-// 주기적 토큰 갱신 (8시간마다)
-setInterval(
-  async () => {
-    try {
-      await renewToken()
-      console.log('정기 토큰 갱신 완료')
-    } catch (error) {
-      console.error('정기 토큰 갱신 오류:', error.message)
-    }
-  },
-  4 * 60 * 60 * 1000
-) // 8시간
+// 주기적 토큰 갱신 (4시간마다)
+setInterval(async () => {
+  try {
+    await renewToken();
+    console.log('정기 토큰 갱신 완료');
+  } catch (error) {
+    console.error('정기 토큰 갱신 오류:', error.message);
+  }
+}, 4 * 60 * 60 * 1000); // 4시간
+
+// 초기화 시 뉴스 기사 크롤링 갱신
+fetchNews()
+
+// 주기적 뉴스 크롤링 (30분마다)
+setInterval(async () => {
+  try {
+    await setInterval();
+    console.log('정기 뉴스 크롤링 완료');
+  } catch (error) {
+    console.error('정기 뉴스 크롤링 오류:', error.message);
+  }
+}, 0.5 * 60 * 60 * 1000); // 30분
 
 app.use(
   cors({
@@ -81,6 +93,7 @@ mainRouter.use('/users', usersRouter)
 mainRouter.use('/chat', chatRouter)
 mainRouter.use('/keywords', keywordRouter)
 mainRouter.use('/stocks', stockRouter)
+mainRouter.use('/news', newsRouter)
 
 app.use('/api', mainRouter)
 
