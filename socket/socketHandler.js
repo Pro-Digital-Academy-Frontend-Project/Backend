@@ -39,6 +39,7 @@ const socketHandler = (io) => {
         const { message_id, roomId, message, created_at, nickname } = data;
         console.log("sendTotalMessage");
         console.log(`[${roomId}] 메시지:`, data);
+        
         io.to(roomId).emit("receiveTotalMessage", {
           roomId: `${roomId}`,
           message_id: `${message_id}`,
