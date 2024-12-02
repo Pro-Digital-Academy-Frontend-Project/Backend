@@ -52,7 +52,7 @@ setInterval(async () => {
   } catch (error) {
     console.error('정기 토큰 갱신 오류:', error.message);
   }
-}, 8 * 60 * 60 * 1000); // 8시간
+}, 4 * 60 * 60 * 1000); // 8시간
 
 app.use(
   cors({
