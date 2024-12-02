@@ -20,6 +20,7 @@ exports.getKeywordRankingByStock = async stockId => {
     return {
       stock_name: keywords[0]?.Stock?.dataValues?.stock_name,
       keyword_rankings: keywords.map(keyword => ({
+        id: keyword.id,
         keyword: keyword.keyword,
         weight: keyword.weight,
       })),
