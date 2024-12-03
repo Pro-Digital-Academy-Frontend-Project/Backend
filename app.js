@@ -62,7 +62,7 @@ fetchNews()
 // 주기적 뉴스 크롤링 (30분마다)
 setInterval(async () => {
   try {
-    await setInterval();
+    await fetchNews();
     console.log('정기 뉴스 크롤링 완료');
   } catch (error) {
     console.error('정기 뉴스 크롤링 오류:', error.message);
