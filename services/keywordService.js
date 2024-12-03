@@ -70,7 +70,7 @@ exports.getStocksRankingByKeyword = async keyword_id => {
 exports.getTotalRanking = async () => {
   try {
     const rankings = await sequelize.query(
-      `SELECT keyword, SUM(weight) AS totalWeight
+      `SELECT keyword, SUM(weight) AS totalWeight, MAX(id) AS id
             FROM Keyword
             GROUP BY keyword
             ORDER BY totalWeight DESC
@@ -79,6 +79,7 @@ exports.getTotalRanking = async () => {
     )
 
     return rankings.map(keyword => ({
+      keyword_id: keyword.id,
       keyword: keyword.keyword,
       totalWeight: keyword.totalWeight,
     }))
