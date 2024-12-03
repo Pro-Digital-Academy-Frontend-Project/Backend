@@ -108,7 +108,8 @@ exports.sendMessage = async (req, res) => {
         room_id: room_id,
         message: message,
       });
-    res.status(201).json({ message: 'Message sent successfully', message_id: newMessage.id });
+
+    res.status(201).json({ message: 'Message sent successfully', message_id: newMessage.id, created_at: newMessage.created_at });
   } catch (error) {
     console.error('Error sending message:', error);
     res.status(500).json({ error: 'Failed to send message' });
