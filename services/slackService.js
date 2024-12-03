@@ -42,40 +42,44 @@ async function getUserFavoriteInfo(slackEmail) {
       return null // 이메일에 해당하는 사용자가 없으면 null 반환
     }
     const userId = results.id
-    const userKeywordMsg = await getUserKeywordLikeWithStockRank(userId)
-    const userStockMsg = await getUserStockLikeWithKeywordRank(userId)
+
+    const keywords = await getUserKeywordLikeWithStockRank(userId)
+    const stocks = await getUserStockLikeWithKeywordRank(userId)
+    
+    const userKeywordMsg = Object.entries(keywords)
+      .map(
+        ([keyword, stockList]) =>
+          `*${keyword}* 관련 종목 랭킹\n` +
+          stockList
+            .slice(0, 3) // 상위 3개만
+            .map((stock, index) => `${index + 1}. ${stock}`)
+            .join('\n')
+      )
+      .join('\n\n')
+
+    const userStockMsg = Object.entries(stocks)
+      .map(
+        ([stock, keywordList]) =>
+          `*${stock}* 관련 키워드 랭킹\n` +
+          keywordList
+            .slice(0, 3) // 상위 3개만
+            .map((keyword, index) => `${index + 1}. ${keyword}`)
+            .join('\n')
+      )
+      .join('\n\n')
+
     console.log(userKeywordMsg, userStockMsg)
 
-    // // 2. 즐겨찾기 키워드 조회
-    // const [keywordResults] = await sequelize.query(
-    //   `SELECT keyword FROM user_keyword WHERE user_id = :userId AND alarm_status = 1`,
-    //   {
-    //     replacements: { userId },
-    //     type: sequelize.QueryTypes.SELECT,
-    //   }
-    // )
+    const hasKeywords = Object.keys(keywords).length > 0
+    const hasStocks = Object.keys(stocks).length > 0
 
-    // console.log('Keyword Results:', keywordResults)
-
-    // // 3. 즐겨찾기 주식 조회
-    // const [stockResults] = await sequelize.query(
-    //   `SELECT s.stock_name FROM user_stock us JOIN stock s ON us.stock_id = s.id WHERE us.user_id = :userId AND us.alarm_status = true`,
-    //   {
-    //     replacements: { userId },
-    //     type: sequelize.QueryTypes.SELECT,
-    //   }
-    // )
-
-    // // keywordResults, stockResults가 비어있지 않은지 확인
-    // const keywords = keywordResults ? keywordResults.map(kw => kw.keyword) : []
-    // const stockNames = stockResults
-    //   ? stockResults.map(stock => stock.stock_name)
-    //   : []
-
-    // console.log('User favorite keywords:', keywords)
-    // console.log('User favorite stocks:', stockNames)
-
-    return { userKeywordMsg, userStockMsg } // 결과 반환
+    if (hasKeywords && hasStocks) {
+        return `------------------------키워드 별 종목 랭킹------------------------\n${userKeywordMsg}\n\n------------------------종목 별 키워드 랭킹------------------------\n${userStockMsg}`
+      } else if (hasKeywords) {
+        return `------------------------키워드 별 종목 랭킹------------------------\n${userKeywordMsg}`
+      } else if (hasStocks) {
+        return `------------------------종목 별 키워드 랭킹------------------------\n${userStockMsg}`
+      }   
   } catch (err) {
     console.error('Error fetching user favorite info:', err)
     throw err // 에러 처리
@@ -114,8 +118,6 @@ const getUserKeywordLikeWithStockRank = async userId => {
       return acc
     }, {})
 
-    // 결과 반환: { keyword: [stock_name1, stock_name2, ...] }
-    // console.log('User Keyword and Stock Info:', result)
     return result
   } catch (error) {
     console.error('Error fetching user keyword stock info:', error)
@@ -172,7 +174,6 @@ const getUserStockLikeWithKeywordRank = async userId => {
     }, {})
 
     // 4. 결과 반환: { stock_name: [keyword1, keyword2, ...] }
-    // console.log('User Stock and Keyword Info:', result)
     return result
   } catch (error) {
     console.error('Error fetching user stock keyword info:', error)

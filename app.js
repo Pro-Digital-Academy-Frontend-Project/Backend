@@ -44,7 +44,7 @@ sequelize
   })
 
 // 초기화 시 토큰 갱신
-// renewToken()
+renewToken()
 
 // 주기적 토큰 갱신 (4시간마다)
 setInterval(async () => {
