@@ -36,7 +36,7 @@ const BASE_URL = `https://search.naver.com/search.naver?ssc=tab.news.all&where=n
 const fetchNews = async () => {
     try {
         const firstKeyword = await getFirstRanking();
-        const res = await axios.get(`${BASE_URL+firstKeyword[0].dataValues.keyword.trim()}+신한지주`);
+        const res = await axios.get(`${BASE_URL+firstKeyword[0].dataValues.keyword.trim()}`);
         const $ = cheerio.load(res.data);
     
         newsList = $('.group_news .bx')
