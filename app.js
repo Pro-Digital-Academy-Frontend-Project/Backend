@@ -111,4 +111,6 @@ app.use(function (err, req, res, next) {
   res.json(res.locals)
 })
 
+require('./controllers/slackScheduler')
+
 module.exports = app
