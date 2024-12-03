@@ -1,36 +1,41 @@
 const axios = require('axios')
+const { getToken } = require('../services/tokenService')
 
 function getDateRange() {
   const today = new Date()
-  const sixMonthsAgo = new Date(today)
-  sixMonthsAgo.setMonth(today.getMonth() - 6)
+  const twelveMonthsAgo = new Date(today)
+  twelveMonthsAgo.setMonth(today.getMonth() - 36)
 
   const formatDateTime = date =>
     date.getFullYear().toString() +
     (date.getMonth() + 1).toString().padStart(2, '0') +
-    date.getDate().toString().padStart(2, '0') +
-    '0000'
+    date.getDate().toString().padStart(2, '0')
 
   return {
-    start: formatDateTime(sixMonthsAgo),
+    start: formatDateTime(twelveMonthsAgo),
     end: formatDateTime(today),
   }
 }
 
-// 차트 데이터 조회
 exports.getChart = async (req, res) => {
-  const stock_code = req.params.stock_code
-
+  const { stock_code, chart_period } = req.params
   try {
     const { start, end } = getDateRange()
-    const baseUrl = `https://api.stock.naver.com/chart/domestic/item/${stock_code}/day?startDateTime=${start}&endDateTime=${end}`
+    const baseUrl = `https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=${stock_code}&FID_INPUT_DATE_1=${start}&FID_INPUT_DATE_2=${end}&FID_PERIOD_DIV_CODE=${chart_period}&FID_ORG_ADJ_PRC=0`
+    // const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImVjZjY3YTNkLTgzN2YtNGY0Ny05NjU1LTU0YjVjOTkzNmMzNSIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczMjkxNDAwMSwiaWF0IjoxNzMyODI3NjAxLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.--Q_T4rY0BTcFumHqvSLZ-0OLVswT8nhtGpFTLcHfLu9ZtPGIZei2EV1mt1-gjKBWLfN_x3iKpK3XVD1cGPr8Q'
+    const token = getToken()
+
+    const headers = {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
+      appkey: process.env.APP_KEY,
+      appsecret: process.env.APP_SECRET,
+      tr_id: 'FHKST03010100',
+      custtype: 'P',
+    }
 
     const resp = await axios.get(baseUrl, {
-      headers: {
-        'user-agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-        Referer: 'https://finance.naver.com/',
-      },
+      headers: headers,
     })
 
     const data = resp.data
@@ -38,14 +43,16 @@ exports.getChart = async (req, res) => {
       return res.status(500).json({ error: '데이터 조회에 실패했습니다.' })
     }
 
-    const stockData = data.map(item => ({
-      date: `${item.localDate.slice(0, 4)}-${item.localDate.slice(4, 6)}-${item.localDate.slice(6, 8)}`,
-      open: item.openPrice,
-      high: item.highPrice,
-      low: item.lowPrice,
-      close: item.closePrice,
-      volume: item.accumulatedTradingVolume,
-    }))
+    const stockData = data.output2
+      .map(item => ({
+        date: `${item.stck_bsop_date.slice(0, 4)}-${item.stck_bsop_date.slice(4, 6)}-${item.stck_bsop_date.slice(6, 8)}`,
+        open: parseFloat(item.stck_oprc),
+        high: parseFloat(item.stck_hgpr),
+        low: parseFloat(item.stck_lwpr),
+        close: parseFloat(item.stck_clpr),
+        volume: parseInt(item.acml_vol),
+      }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
 
     res.json(stockData)
   } catch (error) {
