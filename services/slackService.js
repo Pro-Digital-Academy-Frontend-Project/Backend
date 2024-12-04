@@ -29,7 +29,7 @@ async function getUserFavoriteInfo(slackEmail) {
   try {
     // 1. 사용자 ID 조회
     const [results] = await sequelize.query(
-      `SELECT id FROM user WHERE slack_id = :slackEmail`,
+      `SELECT id FROM User WHERE slack_id = :slackEmail`,
       {
         replacements: { slackEmail }, // 파라미터 바인딩
         type: sequelize.QueryTypes.SELECT,
@@ -90,9 +90,9 @@ const getUserKeywordLikeWithStockRank = async userId => {
     const stockResults = await sequelize.query(
       `
       SELECT k.keyword, s.stock_name
-      FROM user_keyword uk
-      JOIN keyword k ON uk.keyword = k.keyword
-      JOIN stock s ON k.stock_id = s.id
+      FROM User_Keyword uk
+      JOIN Keyword k ON uk.keyword = k.keyword
+      JOIN Stock s ON k.stock_id = s.id
       WHERE uk.user_id = :userId AND uk.alarm_status = 1
       ORDER BY k.weight DESC;
       `,
@@ -129,8 +129,8 @@ const getUserStockLikeWithKeywordRank = async userId => {
     const stockResults = await sequelize.query(
       `
       SELECT us.stock_id, s.stock_name
-      FROM user_stock us
-      JOIN stock s ON us.stock_id = s.id
+      FROM User_Stock us
+      JOIN Stock s ON us.stock_id = s.id
       WHERE us.user_id = :userId
       `,
       {
@@ -148,7 +148,7 @@ const getUserStockLikeWithKeywordRank = async userId => {
     const keywordResults = await sequelize.query(
       `
       SELECT k.keyword, k.stock_id, k.weight
-      FROM keyword k
+      FROM Keyword k
       WHERE k.stock_id IN (:stockIds)
       ORDER BY k.weight DESC
       `,
