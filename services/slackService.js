@@ -68,8 +68,6 @@ async function getUserFavoriteInfo(slackEmail) {
       )
       .join('\n\n')
 
-    console.log(userKeywordMsg, userStockMsg)
-
     const hasKeywords = Object.keys(keywords).length > 0
     const hasStocks = Object.keys(stocks).length > 0
 

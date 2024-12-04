@@ -82,7 +82,6 @@ exports.loginUser = async (req, res) => {
 exports.alarmUpdate = async (req, res) => {
   const user_id = req.user.userId
   const { slack_id } = req.body
-  console.log(slack_id)
 
   try {
     // slack_id 업데이트

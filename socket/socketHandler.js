@@ -37,8 +37,6 @@ const socketHandler = (io) => {
       // 전체 메시지 전송 처리
       socket.on("sendTotalMessage", (data) => {
         const { message_id, roomId, message, created_at, nickname } = data;
-        console.log("sendTotalMessage");
-        console.log(`[${roomId}] 메시지:`, data);
         
         io.to(roomId).emit("receiveTotalMessage", {
           roomId: `${roomId}`,
@@ -92,8 +90,6 @@ const socketHandler = (io) => {
       // Timeline메시지 전송 처리
       socket.on("sendTimeLineMessage", (data) => {
         const { username, roomId, message, timestamp } = data;
-        console.log("sendTimeLineMessage");
-        console.log(`[${roomId}] 메시지:`, message);
         io.to(roomId).emit("receiveTimeLineMessage", {
           username: `${username}`,
           roomId: `${roomId}`,

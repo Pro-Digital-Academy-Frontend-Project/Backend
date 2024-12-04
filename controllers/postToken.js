@@ -17,8 +17,6 @@ exports.postToken = async (req, res) => {
 
     const resp = await axios.post(baseUrl, bodyData, { headers });
 
-    console.log(resp.data);
-
     const data = resp.data;
 
     if (!data || !data.access_token) {
