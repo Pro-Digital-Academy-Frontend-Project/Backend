@@ -71,8 +71,6 @@ exports.getUserKeyword = async (req, res) => {
         keyword_id: keyword ? keyword.keyword_id : null,  // 가장 큰 id를 keyword_id로 추가
       };
     }));
-
-    console.log(userKeywords)
     
     // userKeyword와 가장 큰 keyword_id를 함께 응답
     res.status(200).json({ userKeywords });
@@ -86,7 +84,6 @@ exports.getUserKeyword = async (req, res) => {
 exports.updateUserKeyword = async (req, res) => {
   const user_id = req.user.userId
   const { id, alarm_status } = req.body
-  console.log(id, alarm_status)
   try {
     const [updatedRows] = await User_Keyword.update(
       { alarm_status }, // 업데이트할 필드

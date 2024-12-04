@@ -71,10 +71,9 @@ exports.getTopStock = async (req, res) => {
     LIMIT 1;
 `);
 
-if (results.length === 0) {
-    return res.status(404).json({ message: 'No stocks found' });
-}
-    console.log("STCOK~", results)
+  if (results.length === 0) {
+      return res.status(404).json({ message: 'No stocks found' });
+  }
 
     res.json(results)
   } catch (error) {

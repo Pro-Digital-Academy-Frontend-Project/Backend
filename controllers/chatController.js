@@ -120,7 +120,6 @@ exports.sendMessage = async (req, res) => {
 exports.likeMessage = async (req, res) => {
   try {
     const { message_id } = req.params;
-    console.log("메시지 아이디: ", message_id, "유저 아이디: ", req.user.userId);
     await Chat_Room_Message_Like.create({
         user_id: req.user.userId, // authenticate 미들웨어를 거치면 이 값을 받을 수 있음
         message_id: message_id,
@@ -136,7 +135,6 @@ exports.likeMessage = async (req, res) => {
 exports.unlikeMessage = async (req, res) => {
     try {
       const { message_id } = req.params;
-      console.log(message_id, req.user.userId)
       await Chat_Room_Message_Like.destroy({
         where: {
           user_id: req.user.userId, // authenticate 미들웨어를 거치면 이 값을 받을 수 있음
