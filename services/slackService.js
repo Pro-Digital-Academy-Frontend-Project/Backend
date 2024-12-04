@@ -131,7 +131,7 @@ const getUserStockLikeWithKeywordRank = async userId => {
       SELECT us.stock_id, s.stock_name
       FROM User_Stock us
       JOIN Stock s ON us.stock_id = s.id
-      WHERE us.user_id = :userId
+      WHERE us.user_id = :userId AND us.alarm_status = 1
       `,
       {
         replacements: { userId },
