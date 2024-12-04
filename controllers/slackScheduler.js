@@ -7,9 +7,13 @@ const {
 } = require('../services/slackService') // 슬랙 관련 로직을 따로 서비스로 분리
 
 // 주기적인 작업 (매일 오전 8시 00분에 DM 보내기)
-schedule.scheduleJob('00 08 * * *', async () => {
-  alarm()
-})
+// schedule.scheduleJob('00 08 * * *', async () => {
+//   alarm()
+// })
+// 3분마다 DM 보내기
+schedule.scheduleJob('*/3 * * * *', async () => {
+  alarm();
+});
 
 const alarm = async () => {
   console.log('Sending DMs to all users...')

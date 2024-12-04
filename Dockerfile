@@ -19,6 +19,7 @@ ENV DB_HOST  localhost
 ENV DB_USER  root
 ENV DB_PASSWORD  1234
 ENV DB_DATABASE sample
+ENV SLACK_API_TOKEN sample
 
 # 서버 포트 설정
 EXPOSE 3000
