@@ -12,7 +12,6 @@ RUN npm install
 
 # 앱 소스 복사
 COPY . .
-VOLUME /app
 
 ENV DOCKER_USERNAME sample_doc
 ENV DOCKER_PASSWORD sample_password
@@ -26,5 +25,4 @@ ENV SLACK_API_TOKEN sample
 EXPOSE 3000
 
 # 앱 실행
-# CMD ["npm", "start"]
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]

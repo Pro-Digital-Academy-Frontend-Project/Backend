@@ -8,14 +8,7 @@ const {
 
 console.log("SlackScheduler.js 실행")
 // 주기적인 작업 (매일 오전 8시 00분에 DM 보내기)
-schedule.scheduleJob('50 9 * * *', async () => {
-  console.log("스케줄러 등록 완료 1")
-  await alarm()
-  console.log('Alarm finished 2');
-})
-
-// 주기적인 작업 (매일 오전 8시 00분에 DM 보내기)
-schedule.scheduleJob('40 9 * * *', async () => {
+schedule.scheduleJob('00 10 * * *', async () => {
   console.log("스케줄러 등록 완료 1")
   await alarm()
   console.log('Alarm finished 2');
@@ -25,7 +18,7 @@ schedule.scheduleJob('40 9 * * *', async () => {
 //   alarm();
 // });
 
-const   alarm = async () => {
+const alarm = async () => {
   console.log('Sending DMs to all users...')
   const users = await getSlackUsers()
   for (const user of users) {
