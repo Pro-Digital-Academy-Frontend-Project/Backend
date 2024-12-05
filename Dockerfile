@@ -26,4 +26,5 @@ ENV SLACK_API_TOKEN sample
 EXPOSE 3000
 
 # 앱 실행
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
