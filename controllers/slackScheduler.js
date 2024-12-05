@@ -8,7 +8,7 @@ const {
 
 console.log("SlackScheduler.js 실행")
 // 주기적인 작업 (매일 오전 8시 00분에 DM 보내기)
-schedule.scheduleJob('02 10 * * *', async () => {
+schedule.scheduleJob('0 8 * * *', async () => {
   console.log("스케줄러 등록 완료 1")
   await alarm()
   console.log('Alarm finished 2');
