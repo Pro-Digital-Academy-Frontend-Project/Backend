@@ -10,6 +10,9 @@ package-lock.json
 # Swagger Setting file
 swagger-output.json
 
+# Test Dir
+/tests/
+
 # Logs
 logs
 *.log
