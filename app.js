@@ -32,6 +32,7 @@ var app = express()
 const sequelize = require('./db') // sequelize 연결을 가져옵니다.
 const { fetchToken, renewToken } = require('./services/tokenService')
 const { fetchNews } = require('./services/newsService')
+const { indexingKeywords } = require('./elasticSearch')
 
 // 데이터베이스 동기화
 sequelize
@@ -68,6 +69,14 @@ setInterval(async () => {
     console.error('정기 뉴스 크롤링 오류:', error.message);
   }
 }, 0.5 * 60 * 60 * 1000); // 30분
+
+setInterval(async () => {
+  try {
+    await indexingKeywords();
+  } catch (error) {
+    console.error("ElasticSearch 인덱스 수정 실패", error.message)
+  }
+}, 3 * 60 * 60 * 1000); // 3시간
 
 app.use(
   cors({
