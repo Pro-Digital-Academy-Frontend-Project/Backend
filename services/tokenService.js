@@ -1,7 +1,8 @@
 const axios = require('axios');
 require('dotenv').config();
 
-let token = null
+// let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImM0MWIzMzEyLTg0MTMtNDZmZi1hYzM1LWI2NTRhYjYyZDQ2MSIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTczNDY1MDM5MiwiaWF0IjoxNzM0NTYzOTkyLCJqdGkiOiJQU0lvaXVTUDAyNU40VkpRMzBzWm96eE5sS0hOaFFPV2RzNGEifQ.HtjY5ic4vOsiAORnk6CYsuTvKy9OZu7DBdl9PoEPoML0bHH2CLDuYK2nUi6J2_u2E7V6zXISn4CqckVkBaMRvA"
+let token = null;
 
 // 토큰을 갱신하는 함수
 const renewToken = async () => {
@@ -37,3 +38,4 @@ const renewToken = async () => {
 const getToken = () => token;
 
 module.exports = { renewToken, getToken }
+// module.exports = {getToken}
