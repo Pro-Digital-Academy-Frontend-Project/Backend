@@ -11,6 +11,7 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,json,css,scss}\""
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^8.17.0",
     "@slack/web-api": "^7.7.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
