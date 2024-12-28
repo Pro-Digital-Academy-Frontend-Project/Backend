@@ -38,9 +38,9 @@ jobs:
       - name: Delpoy Server 1
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: $${{ secrets.BACK_SERVER_HOST_01 }}
-          username: $${{ secrets.BACK_SERVER_USER_01 }}
-          key: $${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.BACK_SERVER_HOST_01 }}
+          username: ${{ secrets.BACK_SERVER_USER_01 }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu
 
@@ -73,9 +73,9 @@ jobs:
       - name: Delpoy Server 2
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: $${{ secrets.BACK_SERVER_HOST_02 }}
-          username: $${{ secrets.BACK_SERVER_USER_02 }}
-          key: $${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.BACK_SERVER_HOST_02 }}
+          username: ${{ secrets.BACK_SERVER_USER_02 }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu
 
