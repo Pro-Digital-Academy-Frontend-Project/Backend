@@ -1,8 +1,9 @@
 const { Client } = require('@elastic/elasticsearch');
 const Keyword = require('./models/Keyword')
+require('dotenv').config()
 
 const client = new Client({
-    node: 'http://localhost:9200'
+    node: `http://${process.env.ES_SERVER}:9200`
 });
 
 // 인덱스를 생성하는 함수 -> DB로 따지면 테이블 생성 + 컬럼
