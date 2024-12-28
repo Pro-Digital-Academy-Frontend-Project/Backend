@@ -53,6 +53,7 @@ jobs:
             echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
             echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
             echo "TZ=Asia/Seoul" >> .env
+            echo "ES_SERVER=${{ secrets.ES_SERVER }}" >> .env
 
             # 도커 이미지 pull
             docker pull ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
@@ -88,7 +89,7 @@ jobs:
             echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
             echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
             echo "TZ=Asia/Seoul" >> .env
-            echo "ES_SERVER=${{ secrets.ES_SERVER }}"
+            echo "ES_SERVER=${{ secrets.ES_SERVER }}" >> .env
 
             # 도커 이미지 pull
             docker pull ${{ secrets.DOCKER_USERNAME }}/stockey-express:latest
